@@ -26,13 +26,14 @@ init _ =
                 , colors = 3
                 }
     in
-    ( { puzzle = puzzle, width = 300, gap = 4 }, Cmd.none )
+    ( { puzzle = puzzle, width = 300, gap = 4, showContent = False }, Cmd.none )
 
 
 type alias Model =
     { puzzle : LightsOut
     , width : Float
     , gap : Float
+    , showContent : Bool
     }
 
 

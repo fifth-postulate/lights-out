@@ -96,7 +96,7 @@ type alias Configuration =
     }
 
 
-view : { a | width : Float, gap : Float } -> LightsOut -> Html Msg
+view : { a | width : Float, gap : Float, showContent : Bool } -> LightsOut -> Html Msg
 view configuration ((Puzzle { colors, rows, columns, lights }) as puzzle) =
     let
         gapSize =
@@ -114,7 +114,7 @@ view configuration ((Puzzle { colors, rows, columns, lights }) as puzzle) =
                 * (buttonSize + configuration.gap)
 
         button =
-            viewButton { size = buttonSize, colors = colors }
+            viewButton { size = buttonSize, colors = colors, showContent = configuration.showContent }
     in
     Html.div
         [ Attribute.css
@@ -134,6 +134,7 @@ view configuration ((Puzzle { colors, rows, columns, lights }) as puzzle) =
 type alias ButtonConfiguration =
     { size : Float
     , colors : Int
+    , showContent : Bool
     }
 
 
@@ -166,7 +167,13 @@ viewButton configuration ( index, value ) =
             ]
         , Event.onClick (Pressed <| Button index)
         ]
-        [ Html.text <| String.fromInt value ]
+        [ Html.text <|
+            if configuration.showContent then
+                String.fromInt value
+
+            else
+                ""
+        ]
 
 
 type Msg
