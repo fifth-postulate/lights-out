@@ -91,29 +91,36 @@ increment index ((Puzzle ({ lights, colors } as state)) as puzzle) =
 
 
 view : LightsOut -> Html Msg
-view ((Puzzle { columns, lights }) as puzzle) =
+view ((Puzzle { colors, rows, columns, lights }) as puzzle) =
     let
-        size =
+        buttonSize =
             50
 
-        offset =
+        buttonGap =
             4
 
         w =
             columns
-                * (size + offset)
+                * (buttonSize + buttonGap)
+                |> toFloat
+
+        h =
+            rows
+                * (buttonSize + buttonGap)
                 |> toFloat
 
         button =
-            viewButton { size = size }
+            viewButton { size = buttonSize, colors = colors }
     in
     Html.div
         [ Attribute.css
             [ width (px w)
+            , height (px h)
             , displayFlex
             , flexDirection row
             , flexWrap wrap
             , justifyContent spaceAround
+            , property "align-content" "space-around"
             ]
         ]
     <|
@@ -122,18 +129,36 @@ view ((Puzzle { columns, lights }) as puzzle) =
 
 type alias ButtonConfiguration =
     { size : Float
+    , colors : Int
     }
 
 
 viewButton : ButtonConfiguration -> ( Int, Int ) -> Html Msg
 viewButton configuration ( index, value ) =
+    let
+        colorAngle =
+            if value == 0 then
+                0.0
+
+            else
+                360 * (toFloat <| (value - 1)) / toFloat configuration.colors
+
+        saturation =
+            if value == 0 then
+                0.0
+
+            else
+                1.0
+    in
     Html.span
         [ Attribute.css
             [ displayFlex
             , justifyContent center
             , alignItems center
+            , borderRadius (pct 25)
             , width (px configuration.size)
             , height (px configuration.size)
+            , backgroundColor <| hsl colorAngle saturation 0.5
             ]
         , Event.onClick (Pressed <| Button index)
         ]
