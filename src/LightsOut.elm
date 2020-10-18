@@ -1,4 +1,4 @@
-module LightsOut exposing (Button, Description, LightsOut, Msg, create, press, set, update, view)
+module LightsOut exposing (Button, Configuration, Description, LightsOut, Msg, create, press, set, update, view)
 
 import Array exposing (Array)
 import Css exposing (..)
@@ -90,24 +90,28 @@ increment index ((Puzzle ({ lights, colors } as state)) as puzzle) =
         |> Maybe.withDefault puzzle
 
 
-view : LightsOut -> Html Msg
-view ((Puzzle { colors, rows, columns, lights }) as puzzle) =
-    let
-        buttonSize =
-            50
+type alias Configuration =
+    { width : Float
+    , gap : Float
+    }
 
-        buttonGap =
-            4
+
+view : { a | width : Float, gap : Float } -> LightsOut -> Html Msg
+view configuration ((Puzzle { colors, rows, columns, lights }) as puzzle) =
+    let
+        gapSize =
+            configuration.gap * toFloat (columns - 1)
+
+        buttonSize =
+            (configuration.width - gapSize) / toFloat columns
 
         w =
-            columns
-                * (buttonSize + buttonGap)
-                |> toFloat
+            toFloat columns
+                * (buttonSize + configuration.gap)
 
         h =
-            rows
-                * (buttonSize + buttonGap)
-                |> toFloat
+            toFloat rows
+                * (buttonSize + configuration.gap)
 
         button =
             viewButton { size = buttonSize, colors = colors }
@@ -119,8 +123,8 @@ view ((Puzzle { colors, rows, columns, lights }) as puzzle) =
             , displayFlex
             , flexDirection row
             , flexWrap wrap
-            , justifyContent spaceAround
-            , property "align-content" "space-around"
+            , justifyContent spaceBetween
+            , property "align-content" "space-between"
             ]
         ]
     <|

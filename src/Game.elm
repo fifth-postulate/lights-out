@@ -21,16 +21,19 @@ init _ =
     let
         puzzle =
             LightsOut.create
-                { rows = 6
-                , columns = 5
+                { rows = 3
+                , columns = 3
                 , colors = 3
                 }
     in
-    ( { puzzle = puzzle }, Cmd.none )
+    ( { puzzle = puzzle, width = 300, gap = 4 }, Cmd.none )
 
 
 type alias Model =
-    { puzzle : LightsOut }
+    { puzzle : LightsOut
+    , width : Float
+    , gap : Float
+    }
 
 
 type Msg
@@ -49,8 +52,8 @@ update message model =
 
 
 view : Model -> Html Msg
-view { puzzle } =
-    Html.map LightsOutMessage <| LightsOut.view puzzle
+view model =
+    Html.map LightsOutMessage <| LightsOut.view model model.puzzle
 
 
 subscriptions : Model -> Sub Msg
