@@ -24,10 +24,10 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     let
         columns =
-            3
+            5
 
         rows =
-            3
+            5
 
         colors =
             2
@@ -46,9 +46,6 @@ init _ =
       , width = 300
       , gap = 0.4
       , showContent = False
-      , columns = columns
-      , rows = rows
-      , colors = colors
       , showDescription = True
       , description =
             { column = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
@@ -65,9 +62,6 @@ type alias Model =
     , width : Float
     , gap : Float
     , showContent : Bool
-    , columns : Int
-    , rows : Int
-    , colors : Int
     , showDescription : Bool
     , description :
         { column : Slider.Model
@@ -79,7 +73,7 @@ type alias Model =
 
 type Msg
     = LightsOutMessage LightsOut.Msg
-    | UpdateDescription Description Int
+    | ResetPuzzle
     | Slider Description Slider.Msg
     | ToggleDescription
 
@@ -103,20 +97,15 @@ update message model =
             in
             ( { model | puzzle = puzzle }, Cmd.map LightsOutMessage cmd )
 
-        UpdateDescription description value ->
+        ResetPuzzle ->
             let
-                updatedModel =
-                    case description of
-                        Columns ->
-                            { model | columns = value }
-
-                        Rows ->
-                            { model | rows = value }
-
-                        Colors ->
-                            { model | colors = value }
+                description =
+                    { columns = floor model.description.column.value
+                    , rows = floor model.description.row.value
+                    , colors = floor model.description.colors.value
+                    }
             in
-            ( { updatedModel | puzzle = LightsOut.create updatedModel }, Cmd.none )
+            ( { model | puzzle = LightsOut.create description }, Cmd.none )
 
         Slider description msg ->
             let
@@ -146,7 +135,7 @@ update message model =
                             { aDescription | colors = slider }
 
                 task =
-                    Task.succeed <| UpdateDescription description (floor slider.value)
+                    Task.succeed ResetPuzzle
             in
             ( { model | description = updatedDescription }
             , Cmd.batch
@@ -160,12 +149,13 @@ view : Model -> Html Msg
 view model =
     Html.div []
         [ viewDescription model
+        , viewControls model
         , Html.map LightsOutMessage <| LightsOut.view model model.puzzle
         ]
 
 
 viewDescription : Model -> Html Msg
-viewDescription { showDescription, columns, rows, colors, description } =
+viewDescription { showDescription, description } =
     if showDescription then
         Html.div []
             [ Html.span [ Event.onClick ToggleDescription ] [ Html.text "⏷" ]
@@ -185,6 +175,13 @@ viewDescription { showDescription, columns, rows, colors, description } =
             [ Html.span [ Event.onClick ToggleDescription ] [ Html.text "⏵" ]
             , Html.hr [] []
             ]
+
+
+viewControls : Model -> Html Msg
+viewControls _ =
+    Html.div []
+        [ Html.button [ Event.onClick ResetPuzzle ] [ Html.text "clear" ]
+        ]
 
 
 subscriptions : Model -> Sub Msg
