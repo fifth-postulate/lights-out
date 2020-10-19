@@ -1,4 +1,4 @@
-module LightsOut exposing (Button, Configuration, Description, LightsOut, Msg, create, press, set, update, view)
+module LightsOut exposing (Button, Configuration, LightsOut, Msg, create, press, set, update, view)
 
 import Array exposing (Array)
 import Css exposing (..)
@@ -26,7 +26,7 @@ type alias Description =
     }
 
 
-create : Description -> LightsOut
+create : { a | colors : Int, rows : Int, columns : Int } -> LightsOut
 create description =
     let
         n =
@@ -99,19 +99,19 @@ type alias Configuration =
 view : { a | width : Float, gap : Float, showContent : Bool } -> LightsOut -> Html Msg
 view configuration ((Puzzle { colors, rows, columns, lights }) as puzzle) =
     let
-        gapSize =
-            configuration.gap * toFloat (columns - 1)
-
         buttonSize =
-            (configuration.width - gapSize) / toFloat columns
+            configuration.width / (configuration.gap + toFloat columns)
+
+        gapSize =
+            (configuration.width - toFloat columns * buttonSize) / toFloat columns
 
         w =
             toFloat columns
-                * (buttonSize + configuration.gap)
+                * (buttonSize + gapSize)
 
         h =
             toFloat rows
-                * (buttonSize + configuration.gap)
+                * (buttonSize + gapSize)
 
         button =
             viewButton { size = buttonSize, colors = colors, showContent = configuration.showContent }
