@@ -6,6 +6,7 @@ import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
 import LightsOut exposing (LightsOut)
+import Random
 import SingleSlider as Slider
 import Task
 
@@ -74,6 +75,8 @@ type alias Model =
 type Msg
     = LightsOutMessage LightsOut.Msg
     | ResetPuzzle
+    | RandomPuzzle
+    | SetPuzzle LightsOut
     | Slider Description Slider.Msg
     | ToggleDescription
 
@@ -98,14 +101,13 @@ update message model =
             ( { model | puzzle = puzzle }, Cmd.map LightsOutMessage cmd )
 
         ResetPuzzle ->
-            let
-                description =
-                    { columns = floor model.description.column.value
-                    , rows = floor model.description.row.value
-                    , colors = floor model.description.colors.value
-                    }
-            in
-            ( { model | puzzle = LightsOut.create description }, Cmd.none )
+            ( { model | puzzle = LightsOut.create <| toDescription model.description }, Cmd.none )
+
+        RandomPuzzle ->
+            ( model, Random.generate SetPuzzle (LightsOut.random <| toDescription model.description) )
+
+        SetPuzzle puzzle ->
+            ( { model | puzzle = puzzle }, Cmd.none )
 
         Slider description msg ->
             let
@@ -145,6 +147,14 @@ update message model =
             )
 
 
+toDescription : { colors : Slider.Model, column : Slider.Model, row : Slider.Model } -> { columns : Int, rows : Int, colors : Int }
+toDescription description =
+    { columns = floor description.column.value
+    , rows = floor description.row.value
+    , colors = floor description.colors.value
+    }
+
+
 view : Model -> Html Msg
 view model =
     Html.div []
@@ -181,6 +191,7 @@ viewControls : Model -> Html Msg
 viewControls _ =
     Html.div []
         [ Html.button [ Event.onClick ResetPuzzle ] [ Html.text "clear" ]
+        , Html.button [ Event.onClick RandomPuzzle ] [ Html.text "random" ]
         ]
 
 

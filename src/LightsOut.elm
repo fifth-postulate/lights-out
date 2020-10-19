@@ -1,10 +1,12 @@
-module LightsOut exposing (Button, Configuration, LightsOut, Msg, create, press, set, update, view)
+module LightsOut exposing (Button, Configuration, LightsOut, Msg, create, press, random, set, update, view)
 
 import Array exposing (Array)
 import Css exposing (..)
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
+import Random exposing (Generator)
+import Random.Array as Rnd
 
 
 type LightsOut
@@ -38,6 +40,22 @@ create description =
         , columns = description.columns
         , lights = Array.repeat n 0
         }
+
+
+random : { a | colors : Int, rows : Int, columns : Int } -> Generator LightsOut
+random description =
+    let
+        n =
+            description.rows * description.columns
+
+        range =
+            Random.int 0 (description.colors - 1)
+
+        toPuzzle =
+            Puzzle << State description.colors description.rows description.columns
+    in
+    Rnd.array n range
+        |> Random.map toPuzzle
 
 
 type Button
