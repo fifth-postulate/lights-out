@@ -49,10 +49,11 @@ init _ =
       , columns = columns
       , rows = rows
       , colors = colors
+      , showDescription = True
       , description =
             { column = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
             , row = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
-            , colors = { defaultSlider | min = 1, max = 20, step = 1, value = colors }
+            , colors = { defaultSlider | min = 1, max = 10, step = 1, value = colors }
             }
       }
     , Cmd.none
@@ -67,6 +68,7 @@ type alias Model =
     , columns : Int
     , rows : Int
     , colors : Int
+    , showDescription : Bool
     , description :
         { column : Slider.Model
         , row : Slider.Model
@@ -79,6 +81,7 @@ type Msg
     = LightsOutMessage LightsOut.Msg
     | UpdateDescription Description Int
     | Slider Description Slider.Msg
+    | ToggleDescription
 
 
 type Description
@@ -90,6 +93,9 @@ type Description
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
+        ToggleDescription ->
+            ( { model | showDescription = not model.showDescription }, Cmd.none )
+
         LightsOutMessage msg ->
             let
                 ( puzzle, cmd ) =
@@ -159,15 +165,26 @@ view model =
 
 
 viewDescription : Model -> Html Msg
-viewDescription { columns, rows, colors, description } =
-    Html.form []
-        [ Html.label [ Attribute.for "columns" ] [ Html.text "columns" ]
-        , Html.map (Slider Columns) (Html.fromUnstyled <| Slider.view description.column)
-        , Html.label [ Attribute.for "rows" ] [ Html.text "rows" ]
-        , Html.map (Slider Rows) (Html.fromUnstyled <| Slider.view description.row)
-        , Html.label [ Attribute.for "colors" ] [ Html.text "colors" ]
-        , Html.map (Slider Colors) (Html.fromUnstyled <| Slider.view description.colors)
-        ]
+viewDescription { showDescription, columns, rows, colors, description } =
+    if showDescription then
+        Html.div []
+            [ Html.span [ Event.onClick ToggleDescription ] [ Html.text "⏷" ]
+            , Html.form []
+                [ Html.label [ Attribute.for "columns" ] [ Html.text "columns" ]
+                , Html.map (Slider Columns) (Html.fromUnstyled <| Slider.view description.column)
+                , Html.label [ Attribute.for "rows" ] [ Html.text "rows" ]
+                , Html.map (Slider Rows) (Html.fromUnstyled <| Slider.view description.row)
+                , Html.label [ Attribute.for "colors" ] [ Html.text "colors" ]
+                , Html.map (Slider Colors) (Html.fromUnstyled <| Slider.view description.colors)
+                ]
+            , Html.hr [] []
+            ]
+
+    else
+        Html.div []
+            [ Html.span [ Event.onClick ToggleDescription ] [ Html.text "⏵" ]
+            , Html.hr [] []
+            ]
 
 
 subscriptions : Model -> Sub Msg
