@@ -1,4 +1,4 @@
-module LightsOut exposing (Button, Configuration, LightsOut, Mode(..), Msg, changeModeTo, create, modeOf, press, random, set, update, view)
+module LightsOut exposing (Button, Configuration, Description, LightsOut, Mode(..), Msg, changeModeTo, create, modeOf, press, random, set, update, view)
 
 import Array exposing (Array)
 import Css exposing (..)
@@ -44,7 +44,7 @@ type alias Description =
     }
 
 
-create : { a | colors : Int, rows : Int, columns : Int } -> LightsOut
+create : Description -> LightsOut
 create description =
     let
         n =
@@ -128,6 +128,7 @@ increment index ((Puzzle ({ lights, colors } as state)) as puzzle) =
 type alias Configuration =
     { width : Float
     , gap : Float
+    , showContent : Bool
     }
 
 

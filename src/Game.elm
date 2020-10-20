@@ -5,7 +5,7 @@ import Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
-import LightsOut exposing (LightsOut, Mode(..))
+import LightsOut exposing (Configuration, Description, LightsOut, Mode(..))
 import Random
 import SingleSlider as Slider
 import Task
@@ -45,7 +45,6 @@ init _ =
     in
     ( { puzzle = puzzle
       , origin = puzzle
-      , width = 300
       , gap = 0.4
       , showContent = False
       , showControl = False
@@ -53,6 +52,7 @@ init _ =
             { columns = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
             , rows = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
             , colors = { defaultSlider | min = 2, max = 10, step = 1, value = colors }
+            , width = { defaultSlider | min = 100, max = 600, step = 50, value = 300 }
             }
       }
     , Cmd.none
@@ -62,7 +62,6 @@ init _ =
 type alias Model =
     { puzzle : LightsOut
     , origin : LightsOut
-    , width : Float
     , gap : Float
     , showContent : Bool
     , showControl : Bool
@@ -74,13 +73,15 @@ type alias Control =
     { columns : Slider.Model
     , rows : Slider.Model
     , colors : Slider.Model
+    , width : Slider.Model
     }
+
 
 type ControlElement
     = Columns
     | Rows
     | Colors
-
+    | Width
 
 
 type Msg
@@ -92,7 +93,6 @@ type Msg
     | SetPuzzle LightsOut
     | Slider ControlElement Slider.Msg
     | ToggleDescription
-
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -140,6 +140,9 @@ update message model =
                         Colors ->
                             Slider.update msg model.control.colors
 
+                        Width ->
+                            Slider.update msg model.control.width
+
                 aControl =
                     model.control
 
@@ -153,6 +156,9 @@ update message model =
 
                         Colors ->
                             { aControl | colors = slider }
+
+                        Width ->
+                            { aControl | width = slider }
 
                 task =
                     Task.succeed ClearPuzzle
@@ -179,7 +185,7 @@ toggle puzzle =
     LightsOut.changeModeTo mode puzzle
 
 
-toDescription : Control -> { columns : Int, rows : Int, colors : Int }
+toDescription : Control -> Description
 toDescription description =
     { columns = floor description.columns.value
     , rows = floor description.rows.value
@@ -192,8 +198,16 @@ view model =
     Html.div []
         [ viewDescription model
         , viewControls model
-        , Html.map LightsOutMessage <| LightsOut.view model model.puzzle
+        , Html.map LightsOutMessage <| LightsOut.view (toConfiguration model) model.puzzle
         ]
+
+
+toConfiguration : Model -> Configuration
+toConfiguration model =
+    { width = model.control.width.value
+    , gap = model.gap
+    , showContent = model.showContent
+    }
 
 
 viewDescription : Model -> Html Msg
@@ -208,6 +222,8 @@ viewDescription { showControl, control } =
                 , Html.map (Slider Rows) (Html.fromUnstyled <| Slider.view control.rows)
                 , Html.label [ Attribute.for "colors" ] [ Html.text "colors" ]
                 , Html.map (Slider Colors) (Html.fromUnstyled <| Slider.view control.colors)
+                , Html.label [ Attribute.for "width" ] [ Html.text "width" ]
+                , Html.map (Slider Width) (Html.fromUnstyled <| Slider.view control.width)
                 ]
             , Html.hr [] []
             ]
@@ -236,4 +252,5 @@ subscriptions { control } =
         [ Sub.map (Slider Columns) <| Slider.subscriptions control.columns
         , Sub.map (Slider Rows) <| Slider.subscriptions control.rows
         , Sub.map (Slider Colors) <| Slider.subscriptions control.colors
+        , Sub.map (Slider Width) <| Slider.subscriptions control.width
         ]
