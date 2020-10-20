@@ -1,7 +1,7 @@
 module Game exposing (..)
 
 import Browser
-import Configuration.Control as ConfigurationControl exposing (toDescription)
+import Configuration.Control as ConfigurationControl exposing (toConfiguration, toDescription)
 import Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
@@ -25,36 +25,18 @@ main =
 init : () -> ( Model, Cmd Msg )
 init _ =
     let
-        columns =
-            5
-
-        rows =
-            5
-
-        colors =
-            2
+        description =
+            { columns = 5
+            , rows = 5
+            , colors = 2
+            }
 
         puzzle =
-            LightsOut.create
-                { columns = columns
-                , rows = rows
-                , colors = colors
-                }
-
-        defaultSlider =
-            Slider.defaultModel
+            LightsOut.create description
     in
     ( { puzzle = puzzle
       , origin = puzzle
-      , control =
-            { columns = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
-            , rows = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
-            , colors = { defaultSlider | min = 2, max = 10, step = 1, value = colors }
-            , width = { defaultSlider | min = 100, max = 600, step = 50, value = 300 }
-            , gap = { defaultSlider | min = 0.1, max = 0.9, step = 0.02, value = 0.4 }
-            , showContent = False
-            , showControl = False
-            }
+      , control = ConfigurationControl.default description
       }
     , Cmd.none
     )
@@ -138,16 +120,8 @@ view model =
     Html.div []
         [ Html.map ConfigurationControlMessage <| ConfigurationControl.view model.control
         , viewControls model
-        , Html.map LightsOutMessage <| LightsOut.view (toConfiguration model) model.puzzle
+        , Html.map LightsOutMessage <| LightsOut.view (toConfiguration model.control) model.puzzle
         ]
-
-
-toConfiguration : Model -> Configuration
-toConfiguration model =
-    { width = model.control.width.value
-    , gap = model.control.gap.value
-    , showContent = model.control.showContent
-    }
 
 
 viewControls : Model -> Html Msg

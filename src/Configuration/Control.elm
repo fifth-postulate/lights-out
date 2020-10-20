@@ -1,10 +1,10 @@
-module Configuration.Control exposing (Model, Msg, subscriptions, toDescription, update, view)
+module Configuration.Control exposing (Model, Msg, default, subscriptions, toConfiguration, toDescription, update, view)
 
 import Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
-import LightsOut exposing (Description)
+import LightsOut exposing (Configuration, Description)
 import SingleSlider as Slider
 
 
@@ -16,6 +16,38 @@ type alias Model =
     , gap : Slider.Model
     , showContent : Bool
     , showControl : Bool
+    }
+
+
+default : Description -> Model
+default description =
+    let
+        defaultSlider =
+            Slider.defaultModel
+    in
+    { columns = { defaultSlider | min = 1, max = 20, step = 1, value = toFloat description.columns }
+    , rows = { defaultSlider | min = 1, max = 20, step = 1, value = toFloat description.rows }
+    , colors = { defaultSlider | min = 2, max = 10, step = 1, value = toFloat description.colors }
+    , width = { defaultSlider | min = 100, max = 600, step = 50, value = 300 }
+    , gap = { defaultSlider | min = 0.1, max = 0.9, step = 0.02, value = 0.4 }
+    , showContent = False
+    , showControl = False
+    }
+
+
+toDescription : Model -> Description
+toDescription description =
+    { columns = floor description.columns.value
+    , rows = floor description.rows.value
+    , colors = floor description.colors.value
+    }
+
+
+toConfiguration : Model -> Configuration
+toConfiguration model =
+    { width = model.width.value
+    , gap = model.gap.value
+    , showContent = model.showContent
     }
 
 
@@ -79,14 +111,6 @@ update message model =
                             { model | gap = slider }
             in
             ( updatedModel, Cmd.map (Slider element) cmd )
-
-
-toDescription : Model -> Description
-toDescription description =
-    { columns = floor description.columns.value
-    , rows = floor description.rows.value
-    , colors = floor description.colors.value
-    }
 
 
 view : Model -> Html Msg
