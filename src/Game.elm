@@ -26,7 +26,8 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     let
         description =
-            { columns = 5
+            { mode = Standard
+            , columns = 5
             , rows = 5
             , colors = 2
             }
@@ -55,7 +56,7 @@ type Msg
     | ClearPuzzle
     | RandomPuzzle
     | ResetPuzzle
-    | ToggleMode
+    | ChangeMode Mode
     | SetPuzzle LightsOut
 
 
@@ -84,35 +85,21 @@ update message model =
         ClearPuzzle ->
             let
                 puzzle =
-                    LightsOut.create <| toDescription model.control
+                    LightsOut.create <| toDescription (LightsOut.modeOf model.puzzle) model.control
             in
             ( model, Task.perform SetPuzzle <| Task.succeed puzzle )
 
         RandomPuzzle ->
-            ( model, Random.generate SetPuzzle (LightsOut.random <| toDescription model.control) )
+            ( model, Random.generate SetPuzzle (LightsOut.random <| toDescription (LightsOut.modeOf model.puzzle) model.control) )
 
         ResetPuzzle ->
             ( { model | puzzle = model.origin }, Cmd.none )
 
-        ToggleMode ->
-            ( { model | puzzle = toggle model.puzzle }, Cmd.none )
+        ChangeMode mode ->
+            ( { model | puzzle = LightsOut.changeModeTo mode model.puzzle }, Cmd.none )
 
         SetPuzzle puzzle ->
             ( { model | puzzle = puzzle, origin = puzzle }, Cmd.none )
-
-
-toggle : LightsOut -> LightsOut
-toggle puzzle =
-    let
-        mode =
-            case LightsOut.modeOf puzzle of
-                Play ->
-                    Set
-
-                _ ->
-                    Play
-    in
-    LightsOut.changeModeTo mode puzzle
 
 
 view : Model -> Html Msg
@@ -127,8 +114,12 @@ view model =
 viewControls : Model -> Html Msg
 viewControls model =
     Html.div []
-        [ Html.input [ Attribute.type_ "checkbox", Attribute.id "play", Attribute.checked <| LightsOut.modeOf model.puzzle == Play, Event.onInput <| \_ -> ToggleMode ] []
-        , Html.label [ Attribute.for "play" ] [ Html.text "play" ]
+        [ Html.input [ Attribute.type_ "radio", Attribute.id "set", Attribute.name "mode", Attribute.checked <| LightsOut.modeOf model.puzzle == Set, Event.onInput <| \_ -> ChangeMode Set ] []
+        , Html.label [ Attribute.for "set" ] [ Html.text "set" ]
+        , Html.input [ Attribute.type_ "radio", Attribute.id "standard", Attribute.name "mode", Attribute.checked <| LightsOut.modeOf model.puzzle == Standard, Event.onInput <| \_ -> ChangeMode Standard ] []
+        , Html.label [ Attribute.for "standard" ] [ Html.text "standard" ]
+        , Html.input [ Attribute.type_ "radio", Attribute.id "restricted", Attribute.name "mode", Attribute.checked <| LightsOut.modeOf model.puzzle == Restricted, Event.onInput <| \_ -> ChangeMode Restricted ] []
+        , Html.label [ Attribute.for "restricted" ] [ Html.text "restricted" ]
         , Html.button [ Event.onClick ClearPuzzle ] [ Html.text "clear" ]
         , Html.button [ Event.onClick RandomPuzzle ] [ Html.text "random" ]
         , Html.button [ Event.onClick ResetPuzzle ] [ Html.text "reset" ]

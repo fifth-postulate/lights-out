@@ -4,7 +4,7 @@ import Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
-import LightsOut exposing (Configuration, Description)
+import LightsOut exposing (Configuration, Description, Mode)
 import SingleSlider as Slider
 
 
@@ -35,9 +35,10 @@ default description =
     }
 
 
-toDescription : Model -> Description
-toDescription description =
-    { columns = floor description.columns.value
+toDescription : Mode -> Model -> Description
+toDescription mode description =
+    { mode = mode
+    , columns = floor description.columns.value
     , rows = floor description.rows.value
     , colors = floor description.colors.value
     }

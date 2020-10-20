@@ -23,7 +23,8 @@ type alias State =
 
 
 type Mode
-    = Play
+    = Standard
+    | Restricted
     | Set
 
 
@@ -41,6 +42,7 @@ type alias Description =
     { colors : Int
     , rows : Int
     , columns : Int
+    , mode : Mode
     }
 
 
@@ -51,7 +53,7 @@ create description =
             description.rows * description.columns
     in
     Puzzle
-        { mode = Play
+        { mode = description.mode
         , colors = description.colors
         , rows = description.rows
         , columns = description.columns
@@ -59,7 +61,7 @@ create description =
         }
 
 
-random : { a | colors : Int, rows : Int, columns : Int } -> Generator LightsOut
+random : Description -> Generator LightsOut
 random description =
     let
         n =
@@ -69,7 +71,7 @@ random description =
             Random.int 0 (description.colors - 1)
 
         toPuzzle =
-            Puzzle << State Play description.colors description.rows description.columns
+            Puzzle << State description.mode description.colors description.rows description.columns
     in
     Rnd.array n range
         |> Random.map toPuzzle
@@ -77,6 +79,13 @@ random description =
 
 type Button
     = Button Int
+
+
+lit : Button -> LightsOut -> Basics.Bool
+lit (Button index) (Puzzle { lights }) =
+    Array.get index lights
+        |> Maybe.map ((/=) 0)
+        |> Maybe.withDefault False
 
 
 set : Button -> LightsOut -> LightsOut
@@ -132,7 +141,7 @@ type alias Configuration =
     }
 
 
-view : { a | width : Float, gap : Float, showContent : Bool } -> LightsOut -> Html Msg
+view : Configuration -> LightsOut -> Html Msg
 view configuration ((Puzzle { colors, rows, columns, lights }) as puzzle) =
     let
         buttonSize =
@@ -224,5 +233,12 @@ update message ((Puzzle { mode }) as puzzle) =
                 Set ->
                     ( set b puzzle, Cmd.none )
 
-                Play ->
+                Standard ->
                     ( press b puzzle, Cmd.none )
+
+                Restricted ->
+                    if lit b puzzle then
+                        ( press b puzzle, Cmd.none )
+
+                    else
+                        ( puzzle, Cmd.none )
