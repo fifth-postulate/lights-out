@@ -5,7 +5,7 @@ import Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
-import LightsOut exposing (LightsOut)
+import LightsOut exposing (LightsOut, Mode(..))
 import Random
 import SingleSlider as Slider
 import Task
@@ -76,6 +76,7 @@ type Msg
     = LightsOutMessage LightsOut.Msg
     | ResetPuzzle
     | RandomPuzzle
+    | ToggleMode
     | SetPuzzle LightsOut
     | Slider Description Slider.Msg
     | ToggleDescription
@@ -105,6 +106,9 @@ update message model =
 
         RandomPuzzle ->
             ( model, Random.generate SetPuzzle (LightsOut.random <| toDescription model.description) )
+
+        ToggleMode ->
+            ( { model | puzzle = LightsOut.toggle model.puzzle }, Cmd.none )
 
         SetPuzzle puzzle ->
             ( { model | puzzle = puzzle }, Cmd.none )
@@ -188,9 +192,11 @@ viewDescription { showDescription, description } =
 
 
 viewControls : Model -> Html Msg
-viewControls _ =
+viewControls model =
     Html.div []
-        [ Html.button [ Event.onClick ResetPuzzle ] [ Html.text "clear" ]
+        [ Html.input [ Attribute.type_ "checkbox", Attribute.id "play", Attribute.checked <| LightsOut.toMode model.puzzle == Play, Event.onInput <| \_ -> ToggleMode ] []
+        , Html.label [ Attribute.for "play" ] [ Html.text "play" ]
+        , Html.button [ Event.onClick ResetPuzzle ] [ Html.text "clear" ]
         , Html.button [ Event.onClick RandomPuzzle ] [ Html.text "random" ]
         ]
 

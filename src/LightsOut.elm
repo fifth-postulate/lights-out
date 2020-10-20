@@ -1,4 +1,4 @@
-module LightsOut exposing (Button, Configuration, LightsOut, Msg, create, press, random, set, update, view)
+module LightsOut exposing (Button, Configuration, LightsOut, Mode(..), Msg, create, press, random, set, toMode, toggle, update, view)
 
 import Array exposing (Array)
 import Css exposing (..)
@@ -14,11 +14,36 @@ type LightsOut
 
 
 type alias State =
-    { colors : Int
+    { mode : Mode
+    , colors : Int
     , rows : Int
     , columns : Int
     , lights : Array Int
     }
+
+
+type Mode
+    = Play
+    | Set
+
+
+toMode : LightsOut -> Mode
+toMode (Puzzle { mode }) =
+    mode
+
+
+toggle : LightsOut -> LightsOut
+toggle (Puzzle puzzle) =
+    let
+        mode =
+            case puzzle.mode of
+                Play ->
+                    Set
+
+                Set ->
+                    Play
+    in
+    Puzzle { puzzle | mode = mode }
 
 
 type alias Description =
@@ -35,7 +60,8 @@ create description =
             description.rows * description.columns
     in
     Puzzle
-        { colors = description.colors
+        { mode = Play
+        , colors = description.colors
         , rows = description.rows
         , columns = description.columns
         , lights = Array.repeat n 0
@@ -52,7 +78,7 @@ random description =
             Random.int 0 (description.colors - 1)
 
         toPuzzle =
-            Puzzle << State description.colors description.rows description.columns
+            Puzzle << State Play description.colors description.rows description.columns
     in
     Rnd.array n range
         |> Random.map toPuzzle
@@ -199,7 +225,12 @@ type Msg
 
 
 update : Msg -> LightsOut -> ( LightsOut, Cmd Msg )
-update message puzzle =
+update message ((Puzzle { mode }) as puzzle) =
     case message of
         Pressed b ->
-            ( press b puzzle, Cmd.none )
+            case mode of
+                Set ->
+                    ( set b puzzle, Cmd.none )
+
+                Play ->
+                    ( press b puzzle, Cmd.none )
