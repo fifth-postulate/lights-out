@@ -1,4 +1,4 @@
-module LightsOut exposing (Button, Configuration, LightsOut, Mode(..), Msg, create, press, random, set, toMode, toggle, update, view)
+module LightsOut exposing (Button, Configuration, LightsOut, Mode(..), Msg, changeModeTo, create, modeOf, press, random, set, update, view)
 
 import Array exposing (Array)
 import Css exposing (..)
@@ -27,22 +27,13 @@ type Mode
     | Set
 
 
-toMode : LightsOut -> Mode
-toMode (Puzzle { mode }) =
+modeOf : LightsOut -> Mode
+modeOf (Puzzle { mode }) =
     mode
 
 
-toggle : LightsOut -> LightsOut
-toggle (Puzzle puzzle) =
-    let
-        mode =
-            case puzzle.mode of
-                Play ->
-                    Set
-
-                Set ->
-                    Play
-    in
+changeModeTo : Mode -> LightsOut -> LightsOut
+changeModeTo mode (Puzzle puzzle) =
     Puzzle { puzzle | mode = mode }
 
 

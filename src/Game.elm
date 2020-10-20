@@ -44,10 +44,11 @@ init _ =
             Slider.defaultModel
     in
     ( { puzzle = puzzle
+      , origin = puzzle
       , width = 300
       , gap = 0.4
       , showContent = False
-      , showDescription = True
+      , showDescription = False
       , description =
             { column = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
             , row = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
@@ -60,6 +61,7 @@ init _ =
 
 type alias Model =
     { puzzle : LightsOut
+    , origin : LightsOut
     , width : Float
     , gap : Float
     , showContent : Bool
@@ -74,8 +76,9 @@ type alias Model =
 
 type Msg
     = LightsOutMessage LightsOut.Msg
-    | ResetPuzzle
+    | ClearPuzzle
     | RandomPuzzle
+    | ResetPuzzle
     | ToggleMode
     | SetPuzzle LightsOut
     | Slider Description Slider.Msg
@@ -101,17 +104,24 @@ update message model =
             in
             ( { model | puzzle = puzzle }, Cmd.map LightsOutMessage cmd )
 
-        ResetPuzzle ->
-            ( { model | puzzle = LightsOut.create <| toDescription model.description }, Cmd.none )
+        ClearPuzzle ->
+            let
+                puzzle =
+                    LightsOut.create <| toDescription model.description
+            in
+            ( model, Task.perform SetPuzzle <| Task.succeed puzzle )
 
         RandomPuzzle ->
             ( model, Random.generate SetPuzzle (LightsOut.random <| toDescription model.description) )
 
+        ResetPuzzle ->
+            ( { model | puzzle = model.origin }, Cmd.none )
+
         ToggleMode ->
-            ( { model | puzzle = LightsOut.toggle model.puzzle }, Cmd.none )
+            ( { model | puzzle = toggle model.puzzle }, Cmd.none )
 
         SetPuzzle puzzle ->
-            ( { model | puzzle = puzzle }, Cmd.none )
+            ( { model | puzzle = puzzle, origin = puzzle }, Cmd.none )
 
         Slider description msg ->
             let
@@ -141,7 +151,7 @@ update message model =
                             { aDescription | colors = slider }
 
                 task =
-                    Task.succeed ResetPuzzle
+                    Task.succeed ClearPuzzle
             in
             ( { model | description = updatedDescription }
             , Cmd.batch
@@ -149,6 +159,20 @@ update message model =
                 , Task.perform identity task
                 ]
             )
+
+
+toggle : LightsOut -> LightsOut
+toggle puzzle =
+    let
+        mode =
+            case LightsOut.modeOf puzzle of
+                Play ->
+                    Set
+
+                _ ->
+                    Play
+    in
+    LightsOut.changeModeTo mode puzzle
 
 
 toDescription : { colors : Slider.Model, column : Slider.Model, row : Slider.Model } -> { columns : Int, rows : Int, colors : Int }
@@ -194,10 +218,11 @@ viewDescription { showDescription, description } =
 viewControls : Model -> Html Msg
 viewControls model =
     Html.div []
-        [ Html.input [ Attribute.type_ "checkbox", Attribute.id "play", Attribute.checked <| LightsOut.toMode model.puzzle == Play, Event.onInput <| \_ -> ToggleMode ] []
+        [ Html.input [ Attribute.type_ "checkbox", Attribute.id "play", Attribute.checked <| LightsOut.modeOf model.puzzle == Play, Event.onInput <| \_ -> ToggleMode ] []
         , Html.label [ Attribute.for "play" ] [ Html.text "play" ]
-        , Html.button [ Event.onClick ResetPuzzle ] [ Html.text "clear" ]
+        , Html.button [ Event.onClick ClearPuzzle ] [ Html.text "clear" ]
         , Html.button [ Event.onClick RandomPuzzle ] [ Html.text "random" ]
+        , Html.button [ Event.onClick ResetPuzzle ] [ Html.text "reset" ]
         ]
 
 
