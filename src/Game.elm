@@ -45,7 +45,6 @@ init _ =
     in
     ( { puzzle = puzzle
       , origin = puzzle
-      , gap = 0.4
       , showContent = False
       , showControl = False
       , control =
@@ -53,6 +52,7 @@ init _ =
             , rows = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
             , colors = { defaultSlider | min = 2, max = 10, step = 1, value = colors }
             , width = { defaultSlider | min = 100, max = 600, step = 50, value = 300 }
+            , gap = { defaultSlider | min = 0.1, max = 0.9, step = 0.02, value = 0.4 }
             }
       }
     , Cmd.none
@@ -62,7 +62,6 @@ init _ =
 type alias Model =
     { puzzle : LightsOut
     , origin : LightsOut
-    , gap : Float
     , showContent : Bool
     , showControl : Bool
     , control : Control
@@ -74,6 +73,7 @@ type alias Control =
     , rows : Slider.Model
     , colors : Slider.Model
     , width : Slider.Model
+    , gap : Slider.Model
     }
 
 
@@ -82,6 +82,7 @@ type ControlElement
     | Rows
     | Colors
     | Width
+    | Gap
 
 
 type Msg
@@ -92,13 +93,13 @@ type Msg
     | ToggleMode
     | SetPuzzle LightsOut
     | Slider ControlElement Slider.Msg
-    | ToggleDescription
+    | ToggleControl
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
-        ToggleDescription ->
+        ToggleControl ->
             ( { model | showControl = not model.showControl }, Cmd.none )
 
         LightsOutMessage msg ->
@@ -127,10 +128,10 @@ update message model =
         SetPuzzle puzzle ->
             ( { model | puzzle = puzzle, origin = puzzle }, Cmd.none )
 
-        Slider description msg ->
+        Slider element msg ->
             let
                 ( slider, cmd, _ ) =
-                    case description of
+                    case element of
                         Columns ->
                             Slider.update msg model.control.columns
 
@@ -143,11 +144,14 @@ update message model =
                         Width ->
                             Slider.update msg model.control.width
 
+                        Gap ->
+                            Slider.update msg model.control.gap
+
                 aControl =
                     model.control
 
                 updatedControl =
-                    case description of
+                    case element of
                         Columns ->
                             { aControl | columns = slider }
 
@@ -160,12 +164,15 @@ update message model =
                         Width ->
                             { aControl | width = slider }
 
+                        Gap ->
+                            { aControl | gap = slider }
+
                 task =
                     Task.succeed ClearPuzzle
             in
             ( { model | control = updatedControl }
             , Cmd.batch
-                [ Cmd.map (Slider description) cmd
+                [ Cmd.map (Slider element) cmd
                 , Task.perform identity task
                 ]
             )
@@ -205,7 +212,7 @@ view model =
 toConfiguration : Model -> Configuration
 toConfiguration model =
     { width = model.control.width.value
-    , gap = model.gap
+    , gap = model.control.gap.value
     , showContent = model.showContent
     }
 
@@ -214,7 +221,7 @@ viewDescription : Model -> Html Msg
 viewDescription { showControl, control } =
     if showControl then
         Html.div []
-            [ Html.span [ Event.onClick ToggleDescription ] [ Html.text "⏷" ]
+            [ Html.span [ Event.onClick ToggleControl ] [ Html.text "⏷" ]
             , Html.form []
                 [ Html.label [ Attribute.for "columns" ] [ Html.text "columns" ]
                 , Html.map (Slider Columns) (Html.fromUnstyled <| Slider.view control.columns)
@@ -224,13 +231,15 @@ viewDescription { showControl, control } =
                 , Html.map (Slider Colors) (Html.fromUnstyled <| Slider.view control.colors)
                 , Html.label [ Attribute.for "width" ] [ Html.text "width" ]
                 , Html.map (Slider Width) (Html.fromUnstyled <| Slider.view control.width)
+                , Html.label [ Attribute.for "gap" ] [ Html.text "gap" ]
+                , Html.map (Slider Gap) (Html.fromUnstyled <| Slider.view control.gap)
                 ]
             , Html.hr [] []
             ]
 
     else
         Html.div []
-            [ Html.span [ Event.onClick ToggleDescription ] [ Html.text "⏵" ]
+            [ Html.span [ Event.onClick ToggleControl ] [ Html.text "⏵" ]
             , Html.hr [] []
             ]
 
@@ -253,4 +262,5 @@ subscriptions { control } =
         , Sub.map (Slider Rows) <| Slider.subscriptions control.rows
         , Sub.map (Slider Colors) <| Slider.subscriptions control.colors
         , Sub.map (Slider Width) <| Slider.subscriptions control.width
-        ]
+        , Sub.map (Slider Gap) <| Slider.subscriptions control.gap
+         ]
