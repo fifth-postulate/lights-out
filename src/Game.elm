@@ -45,14 +45,14 @@ init _ =
     in
     ( { puzzle = puzzle
       , origin = puzzle
-      , showContent = False
-      , showControl = False
       , control =
             { columns = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
             , rows = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
             , colors = { defaultSlider | min = 2, max = 10, step = 1, value = colors }
             , width = { defaultSlider | min = 100, max = 600, step = 50, value = 300 }
             , gap = { defaultSlider | min = 0.1, max = 0.9, step = 0.02, value = 0.4 }
+            , showContent = False
+            , showControl = False
             }
       }
     , Cmd.none
@@ -62,8 +62,6 @@ init _ =
 type alias Model =
     { puzzle : LightsOut
     , origin : LightsOut
-    , showContent : Bool
-    , showControl : Bool
     , control : Control
     }
 
@@ -74,6 +72,8 @@ type alias Control =
     , colors : Slider.Model
     , width : Slider.Model
     , gap : Slider.Model
+    , showContent : Bool
+    , showControl : Bool
     }
 
 
@@ -93,6 +93,7 @@ type Msg
     | ToggleMode
     | SetPuzzle LightsOut
     | Slider ControlElement Slider.Msg
+    | ShowContent Bool
     | ToggleControl
 
 
@@ -100,7 +101,14 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
         ToggleControl ->
-            ( { model | showControl = not model.showControl }, Cmd.none )
+            let
+                aControl =
+                    model.control
+
+                control =
+                    { aControl | showControl = not aControl.showControl }
+            in
+            ( { model | control = control }, Cmd.none )
 
         LightsOutMessage msg ->
             let
@@ -127,6 +135,16 @@ update message model =
 
         SetPuzzle puzzle ->
             ( { model | puzzle = puzzle, origin = puzzle }, Cmd.none )
+
+        ShowContent showContent ->
+            let
+                control =
+                    model.control
+
+                updatedControl =
+                    { control | showContent = showContent }
+            in
+            ( { model | control = updatedControl }, Cmd.none )
 
         Slider element msg ->
             let
@@ -203,7 +221,7 @@ toDescription description =
 view : Model -> Html Msg
 view model =
     Html.div []
-        [ viewDescription model
+        [ viewControl model
         , viewControls model
         , Html.map LightsOutMessage <| LightsOut.view (toConfiguration model) model.puzzle
         ]
@@ -213,13 +231,13 @@ toConfiguration : Model -> Configuration
 toConfiguration model =
     { width = model.control.width.value
     , gap = model.control.gap.value
-    , showContent = model.showContent
+    , showContent = model.control.showContent
     }
 
 
-viewDescription : Model -> Html Msg
-viewDescription { showControl, control } =
-    if showControl then
+viewControl : Model -> Html Msg
+viewControl { control } =
+    if control.showControl then
         Html.div []
             [ Html.span [ Event.onClick ToggleControl ] [ Html.text "⏷" ]
             , Html.form []
@@ -233,6 +251,8 @@ viewDescription { showControl, control } =
                 , Html.map (Slider Width) (Html.fromUnstyled <| Slider.view control.width)
                 , Html.label [ Attribute.for "gap" ] [ Html.text "gap" ]
                 , Html.map (Slider Gap) (Html.fromUnstyled <| Slider.view control.gap)
+                , Html.label [ Attribute.for "show" ] [ Html.text "show content" ]
+                , Html.input [ Attribute.type_ "checkbox", Attribute.checked control.showContent, Event.onCheck ShowContent ] []
                 ]
             , Html.hr [] []
             ]
@@ -263,4 +283,4 @@ subscriptions { control } =
         , Sub.map (Slider Colors) <| Slider.subscriptions control.colors
         , Sub.map (Slider Width) <| Slider.subscriptions control.width
         , Sub.map (Slider Gap) <| Slider.subscriptions control.gap
-         ]
+        ]
