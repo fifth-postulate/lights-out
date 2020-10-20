@@ -1,6 +1,7 @@
 module Game exposing (..)
 
 import Browser
+import Configuration.Control as ConfigurationControl exposing (toDescription)
 import Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
@@ -62,60 +63,41 @@ init _ =
 type alias Model =
     { puzzle : LightsOut
     , origin : LightsOut
-    , control : Control
+    , control : ConfigurationControl.Model
     }
-
-
-type alias Control =
-    { columns : Slider.Model
-    , rows : Slider.Model
-    , colors : Slider.Model
-    , width : Slider.Model
-    , gap : Slider.Model
-    , showContent : Bool
-    , showControl : Bool
-    }
-
-
-type ControlElement
-    = Columns
-    | Rows
-    | Colors
-    | Width
-    | Gap
 
 
 type Msg
     = LightsOutMessage LightsOut.Msg
+    | ConfigurationControlMessage ConfigurationControl.Msg
     | ClearPuzzle
     | RandomPuzzle
     | ResetPuzzle
     | ToggleMode
     | SetPuzzle LightsOut
-    | Slider ControlElement Slider.Msg
-    | ShowContent Bool
-    | ToggleControl
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
-        ToggleControl ->
-            let
-                aControl =
-                    model.control
-
-                control =
-                    { aControl | showControl = not aControl.showControl }
-            in
-            ( { model | control = control }, Cmd.none )
-
         LightsOutMessage msg ->
             let
                 ( puzzle, cmd ) =
                     LightsOut.update msg model.puzzle
             in
             ( { model | puzzle = puzzle }, Cmd.map LightsOutMessage cmd )
+
+        ConfigurationControlMessage msg ->
+            let
+                ( control, cmd ) =
+                    ConfigurationControl.update msg model.control
+            in
+            ( { model | control = control }
+            , Cmd.batch
+                [ Cmd.map ConfigurationControlMessage cmd
+                , Task.perform identity <| Task.succeed ClearPuzzle
+                ]
+            )
 
         ClearPuzzle ->
             let
@@ -136,65 +118,6 @@ update message model =
         SetPuzzle puzzle ->
             ( { model | puzzle = puzzle, origin = puzzle }, Cmd.none )
 
-        ShowContent showContent ->
-            let
-                control =
-                    model.control
-
-                updatedControl =
-                    { control | showContent = showContent }
-            in
-            ( { model | control = updatedControl }, Cmd.none )
-
-        Slider element msg ->
-            let
-                ( slider, cmd, _ ) =
-                    case element of
-                        Columns ->
-                            Slider.update msg model.control.columns
-
-                        Rows ->
-                            Slider.update msg model.control.rows
-
-                        Colors ->
-                            Slider.update msg model.control.colors
-
-                        Width ->
-                            Slider.update msg model.control.width
-
-                        Gap ->
-                            Slider.update msg model.control.gap
-
-                aControl =
-                    model.control
-
-                updatedControl =
-                    case element of
-                        Columns ->
-                            { aControl | columns = slider }
-
-                        Rows ->
-                            { aControl | rows = slider }
-
-                        Colors ->
-                            { aControl | colors = slider }
-
-                        Width ->
-                            { aControl | width = slider }
-
-                        Gap ->
-                            { aControl | gap = slider }
-
-                task =
-                    Task.succeed ClearPuzzle
-            in
-            ( { model | control = updatedControl }
-            , Cmd.batch
-                [ Cmd.map (Slider element) cmd
-                , Task.perform identity task
-                ]
-            )
-
 
 toggle : LightsOut -> LightsOut
 toggle puzzle =
@@ -210,18 +133,10 @@ toggle puzzle =
     LightsOut.changeModeTo mode puzzle
 
 
-toDescription : Control -> Description
-toDescription description =
-    { columns = floor description.columns.value
-    , rows = floor description.rows.value
-    , colors = floor description.colors.value
-    }
-
-
 view : Model -> Html Msg
 view model =
     Html.div []
-        [ viewControl model
+        [ Html.map ConfigurationControlMessage <| ConfigurationControl.view model.control
         , viewControls model
         , Html.map LightsOutMessage <| LightsOut.view (toConfiguration model) model.puzzle
         ]
@@ -233,35 +148,6 @@ toConfiguration model =
     , gap = model.control.gap.value
     , showContent = model.control.showContent
     }
-
-
-viewControl : Model -> Html Msg
-viewControl { control } =
-    if control.showControl then
-        Html.div []
-            [ Html.span [ Event.onClick ToggleControl ] [ Html.text "⏷" ]
-            , Html.form []
-                [ Html.label [ Attribute.for "columns" ] [ Html.text "columns" ]
-                , Html.map (Slider Columns) (Html.fromUnstyled <| Slider.view control.columns)
-                , Html.label [ Attribute.for "rows" ] [ Html.text "rows" ]
-                , Html.map (Slider Rows) (Html.fromUnstyled <| Slider.view control.rows)
-                , Html.label [ Attribute.for "colors" ] [ Html.text "colors" ]
-                , Html.map (Slider Colors) (Html.fromUnstyled <| Slider.view control.colors)
-                , Html.label [ Attribute.for "width" ] [ Html.text "width" ]
-                , Html.map (Slider Width) (Html.fromUnstyled <| Slider.view control.width)
-                , Html.label [ Attribute.for "gap" ] [ Html.text "gap" ]
-                , Html.map (Slider Gap) (Html.fromUnstyled <| Slider.view control.gap)
-                , Html.label [ Attribute.for "show" ] [ Html.text "show content" ]
-                , Html.input [ Attribute.type_ "checkbox", Attribute.checked control.showContent, Event.onCheck ShowContent ] []
-                ]
-            , Html.hr [] []
-            ]
-
-    else
-        Html.div []
-            [ Html.span [ Event.onClick ToggleControl ] [ Html.text "⏵" ]
-            , Html.hr [] []
-            ]
 
 
 viewControls : Model -> Html Msg
@@ -277,10 +163,4 @@ viewControls model =
 
 subscriptions : Model -> Sub Msg
 subscriptions { control } =
-    Sub.batch
-        [ Sub.map (Slider Columns) <| Slider.subscriptions control.columns
-        , Sub.map (Slider Rows) <| Slider.subscriptions control.rows
-        , Sub.map (Slider Colors) <| Slider.subscriptions control.colors
-        , Sub.map (Slider Width) <| Slider.subscriptions control.width
-        , Sub.map (Slider Gap) <| Slider.subscriptions control.gap
-        ]
+    Sub.map ConfigurationControlMessage <| ConfigurationControl.subscriptions control
