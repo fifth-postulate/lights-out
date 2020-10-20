@@ -48,11 +48,11 @@ init _ =
       , width = 300
       , gap = 0.4
       , showContent = False
-      , showDescription = False
-      , description =
-            { column = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
-            , row = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
-            , colors = { defaultSlider | min = 1, max = 10, step = 1, value = colors }
+      , showControl = False
+      , control =
+            { columns = { defaultSlider | min = 1, max = 20, step = 1, value = columns }
+            , rows = { defaultSlider | min = 1, max = 20, step = 1, value = rows }
+            , colors = { defaultSlider | min = 2, max = 10, step = 1, value = colors }
             }
       }
     , Cmd.none
@@ -65,13 +65,22 @@ type alias Model =
     , width : Float
     , gap : Float
     , showContent : Bool
-    , showDescription : Bool
-    , description :
-        { column : Slider.Model
-        , row : Slider.Model
-        , colors : Slider.Model
-        }
+    , showControl : Bool
+    , control : Control
     }
+
+
+type alias Control =
+    { columns : Slider.Model
+    , rows : Slider.Model
+    , colors : Slider.Model
+    }
+
+type ControlElement
+    = Columns
+    | Rows
+    | Colors
+
 
 
 type Msg
@@ -81,21 +90,16 @@ type Msg
     | ResetPuzzle
     | ToggleMode
     | SetPuzzle LightsOut
-    | Slider Description Slider.Msg
+    | Slider ControlElement Slider.Msg
     | ToggleDescription
 
-
-type Description
-    = Columns
-    | Rows
-    | Colors
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
         ToggleDescription ->
-            ( { model | showDescription = not model.showDescription }, Cmd.none )
+            ( { model | showControl = not model.showControl }, Cmd.none )
 
         LightsOutMessage msg ->
             let
@@ -107,12 +111,12 @@ update message model =
         ClearPuzzle ->
             let
                 puzzle =
-                    LightsOut.create <| toDescription model.description
+                    LightsOut.create <| toDescription model.control
             in
             ( model, Task.perform SetPuzzle <| Task.succeed puzzle )
 
         RandomPuzzle ->
-            ( model, Random.generate SetPuzzle (LightsOut.random <| toDescription model.description) )
+            ( model, Random.generate SetPuzzle (LightsOut.random <| toDescription model.control) )
 
         ResetPuzzle ->
             ( { model | puzzle = model.origin }, Cmd.none )
@@ -128,32 +132,32 @@ update message model =
                 ( slider, cmd, _ ) =
                     case description of
                         Columns ->
-                            Slider.update msg model.description.column
+                            Slider.update msg model.control.columns
 
                         Rows ->
-                            Slider.update msg model.description.row
+                            Slider.update msg model.control.rows
 
                         Colors ->
-                            Slider.update msg model.description.colors
+                            Slider.update msg model.control.colors
 
-                aDescription =
-                    model.description
+                aControl =
+                    model.control
 
-                updatedDescription =
+                updatedControl =
                     case description of
                         Columns ->
-                            { aDescription | column = slider }
+                            { aControl | columns = slider }
 
                         Rows ->
-                            { aDescription | row = slider }
+                            { aControl | rows = slider }
 
                         Colors ->
-                            { aDescription | colors = slider }
+                            { aControl | colors = slider }
 
                 task =
                     Task.succeed ClearPuzzle
             in
-            ( { model | description = updatedDescription }
+            ( { model | control = updatedControl }
             , Cmd.batch
                 [ Cmd.map (Slider description) cmd
                 , Task.perform identity task
@@ -175,10 +179,10 @@ toggle puzzle =
     LightsOut.changeModeTo mode puzzle
 
 
-toDescription : { colors : Slider.Model, column : Slider.Model, row : Slider.Model } -> { columns : Int, rows : Int, colors : Int }
+toDescription : Control -> { columns : Int, rows : Int, colors : Int }
 toDescription description =
-    { columns = floor description.column.value
-    , rows = floor description.row.value
+    { columns = floor description.columns.value
+    , rows = floor description.rows.value
     , colors = floor description.colors.value
     }
 
@@ -193,17 +197,17 @@ view model =
 
 
 viewDescription : Model -> Html Msg
-viewDescription { showDescription, description } =
-    if showDescription then
+viewDescription { showControl, control } =
+    if showControl then
         Html.div []
             [ Html.span [ Event.onClick ToggleDescription ] [ Html.text "⏷" ]
             , Html.form []
                 [ Html.label [ Attribute.for "columns" ] [ Html.text "columns" ]
-                , Html.map (Slider Columns) (Html.fromUnstyled <| Slider.view description.column)
+                , Html.map (Slider Columns) (Html.fromUnstyled <| Slider.view control.columns)
                 , Html.label [ Attribute.for "rows" ] [ Html.text "rows" ]
-                , Html.map (Slider Rows) (Html.fromUnstyled <| Slider.view description.row)
+                , Html.map (Slider Rows) (Html.fromUnstyled <| Slider.view control.rows)
                 , Html.label [ Attribute.for "colors" ] [ Html.text "colors" ]
-                , Html.map (Slider Colors) (Html.fromUnstyled <| Slider.view description.colors)
+                , Html.map (Slider Colors) (Html.fromUnstyled <| Slider.view control.colors)
                 ]
             , Html.hr [] []
             ]
@@ -227,9 +231,9 @@ viewControls model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions { description } =
+subscriptions { control } =
     Sub.batch
-        [ Sub.map (Slider Columns) <| Slider.subscriptions description.column
-        , Sub.map (Slider Rows) <| Slider.subscriptions description.row
-        , Sub.map (Slider Colors) <| Slider.subscriptions description.colors
+        [ Sub.map (Slider Columns) <| Slider.subscriptions control.columns
+        , Sub.map (Slider Rows) <| Slider.subscriptions control.rows
+        , Sub.map (Slider Colors) <| Slider.subscriptions control.colors
         ]
