@@ -1,10 +1,11 @@
-module LightsOut exposing (Button, Configuration, Description, LightsOut, Mode(..), Msg, changeModeTo, create, modeOf, press, random, set, update, view)
+module LightsOut exposing (Button, Configuration, Description, LightsOut, Mode(..), Msg, Solvable(..), changeModeTo, create, modeOf, press, random, set, solvable, update, view)
 
 import Array exposing (Array)
 import Css exposing (..)
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
+import LightsOut.Kernels as Kernels
 import Random exposing (Generator)
 import Random.Array as Rnd
 
@@ -132,6 +133,67 @@ increment index ((Puzzle ({ lights, colors } as state)) as puzzle) =
         |> Maybe.map (\updatedLights -> { state | lights = updatedLights })
         |> Maybe.map Puzzle
         |> Maybe.withDefault puzzle
+
+
+type Solvable
+    = Solvable
+    | Unsolvable
+    | Unknown
+
+
+toSolvable : Bool -> Solvable
+toSolvable v =
+    case v of
+        True ->
+            Solvable
+
+        False ->
+            Unsolvable
+
+
+solvable : LightsOut -> Solvable
+solvable (Puzzle state) =
+    let
+        base =
+            Kernels.base state.colors state.columns state.rows
+
+        inproduct0 b =
+            0 == inproduct state.colors state.lights b
+    in
+    base
+        |> Maybe.map (List.all inproduct0)
+        |> Maybe.map toSolvable
+        |> Maybe.withDefault Unknown
+
+
+inproduct : Int -> Array Int -> Array Int -> Int
+inproduct n left right =
+    let
+        product ( l, r ) =
+            modBy n (l * r)
+
+        sum acc v =
+            modBy n (acc + v)
+    in
+    zip (Array.toList left) (Array.toList right)
+        |> List.map product
+        |> List.foldl sum 0
+
+
+zip : List a -> List b -> List ( a, b )
+zip left right =
+    case ( left, right ) of
+        ( [], [] ) ->
+            []
+
+        ( [], _ ) ->
+            []
+
+        ( _, [] ) ->
+            []
+
+        ( l :: ls, r :: rs ) ->
+            ( l, r ) :: zip ls rs
 
 
 type alias Configuration =

@@ -6,7 +6,7 @@ import Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attribute
 import Html.Styled.Events as Event
-import LightsOut exposing (Configuration, Description, LightsOut, Mode(..))
+import LightsOut exposing (Configuration, Description, LightsOut, Mode(..), Solvable(..))
 import Random
 import SingleSlider as Slider
 import Task
@@ -37,6 +37,7 @@ init _ =
     in
     ( { puzzle = puzzle
       , origin = puzzle
+      , solvable = Solvable
       , control = ConfigurationControl.default description
       }
     , Cmd.none
@@ -46,6 +47,7 @@ init _ =
 type alias Model =
     { puzzle : LightsOut
     , origin : LightsOut
+    , solvable : Solvable
     , control : ConfigurationControl.Model
     }
 
@@ -99,7 +101,7 @@ update message model =
             ( { model | puzzle = LightsOut.changeModeTo mode model.puzzle }, Cmd.none )
 
         SetPuzzle puzzle ->
-            ( { model | puzzle = puzzle, origin = puzzle }, Cmd.none )
+            ( { model | puzzle = puzzle, origin = puzzle, solvable = LightsOut.solvable puzzle }, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -113,8 +115,21 @@ view model =
 
 viewControls : Model -> Html Msg
 viewControls model =
+    let
+        solvable =
+            case model.solvable of
+                Solvable ->
+                    "✓"
+
+                Unsolvable ->
+                    "⛌"
+
+                Unknown ->
+                    "?"
+    in
     Html.div []
-        [ Html.input [ Attribute.type_ "radio", Attribute.id "set", Attribute.name "mode", Attribute.checked <| LightsOut.modeOf model.puzzle == Set, Event.onInput <| \_ -> ChangeMode Set ] []
+        [ Html.span [] [ Html.text solvable ]
+        , Html.input [ Attribute.type_ "radio", Attribute.id "set", Attribute.name "mode", Attribute.checked <| LightsOut.modeOf model.puzzle == Set, Event.onInput <| \_ -> ChangeMode Set ] []
         , Html.label [ Attribute.for "set" ] [ Html.text "set" ]
         , Html.input [ Attribute.type_ "radio", Attribute.id "standard", Attribute.name "mode", Attribute.checked <| LightsOut.modeOf model.puzzle == Standard, Event.onInput <| \_ -> ChangeMode Standard ] []
         , Html.label [ Attribute.for "standard" ] [ Html.text "standard" ]
