@@ -10635,7 +10635,7 @@ var $author$project$Configuration$Control$default = function (description) {
 	};
 };
 var $author$project$Game$init = function (_v0) {
-	var description = {colors: 2, columns: 5, mode: $author$project$LightsOut$Standard, rows: 5};
+	var description = {colors: 2, columns: 5, mode: $author$project$LightsOut$Standard, rows: 2};
 	var puzzle = $author$project$LightsOut$create(description);
 	return _Utils_Tuple2(
 		{
@@ -13137,544 +13137,870 @@ var $author$project$LightsOut$Kernels$knownKernels = A5(
 		A5(
 			$author$project$LightsOut$Kernels$add,
 			10,
-			9,
-			1,
-			$elm$core$Array$fromList(_List_Nil),
+			5,
+			2,
+			$elm$core$Array$fromList(
+				_List_fromArray(
+					[1, 0, 9, 0, 1, 9, 0, 1, 0, 9])),
 			A5(
 				$author$project$LightsOut$Kernels$add,
 				9,
-				9,
-				1,
-				$elm$core$Array$fromList(_List_Nil),
+				5,
+				2,
+				$elm$core$Array$fromList(
+					_List_fromArray(
+						[1, 0, 8, 0, 1, 8, 0, 1, 0, 8])),
 				A5(
 					$author$project$LightsOut$Kernels$add,
-					8,
 					9,
-					1,
-					$elm$core$Array$fromList(_List_Nil),
+					5,
+					2,
+					$elm$core$Array$fromList(
+						_List_fromArray(
+							[0, 3, 3, 6, 3, 6, 3, 6, 6, 0])),
 					A5(
 						$author$project$LightsOut$Kernels$add,
-						7,
-						9,
-						1,
-						$elm$core$Array$fromList(_List_Nil),
+						8,
+						5,
+						2,
+						$elm$core$Array$fromList(
+							_List_fromArray(
+								[1, 0, 7, 0, 1, 7, 0, 1, 0, 7])),
 						A5(
 							$author$project$LightsOut$Kernels$add,
-							6,
-							9,
-							1,
-							$elm$core$Array$fromList(_List_Nil),
+							7,
+							5,
+							2,
+							$elm$core$Array$fromList(
+								_List_fromArray(
+									[1, 0, 6, 0, 1, 6, 0, 1, 0, 6])),
 							A5(
 								$author$project$LightsOut$Kernels$add,
+								6,
 								5,
-								9,
-								1,
-								$elm$core$Array$fromList(_List_Nil),
+								2,
+								$elm$core$Array$fromList(
+									_List_fromArray(
+										[1, 0, 5, 0, 1, 5, 0, 1, 0, 5])),
 								A5(
 									$author$project$LightsOut$Kernels$add,
-									4,
-									9,
-									1,
-									$elm$core$Array$fromList(_List_Nil),
+									6,
+									5,
+									2,
+									$elm$core$Array$fromList(
+										_List_fromArray(
+											[0, 2, 2, 4, 2, 4, 2, 4, 4, 0])),
 									A5(
 										$author$project$LightsOut$Kernels$add,
-										3,
-										9,
-										1,
-										$elm$core$Array$fromList(_List_Nil),
+										5,
+										5,
+										2,
+										$elm$core$Array$fromList(
+											_List_fromArray(
+												[1, 0, 4, 0, 1, 4, 0, 1, 0, 4])),
 										A5(
 											$author$project$LightsOut$Kernels$add,
+											4,
+											5,
 											2,
-											9,
-											1,
-											$elm$core$Array$fromList(_List_Nil),
+											$elm$core$Array$fromList(
+												_List_fromArray(
+													[1, 0, 3, 0, 1, 3, 0, 1, 0, 3])),
 											A5(
 												$author$project$LightsOut$Kernels$add,
-												10,
-												8,
-												1,
+												3,
+												5,
+												2,
 												$elm$core$Array$fromList(
 													_List_fromArray(
-														[1, 9, 0, 1, 9, 0, 1, 9])),
+														[2, 0, 1, 0, 2, 1, 0, 2, 0, 1])),
 												A5(
 													$author$project$LightsOut$Kernels$add,
-													9,
-													8,
-													1,
+													3,
+													5,
+													2,
 													$elm$core$Array$fromList(
 														_List_fromArray(
-															[1, 8, 0, 1, 8, 0, 1, 8])),
+															[0, 2, 2, 1, 2, 1, 2, 1, 1, 0])),
 													A5(
 														$author$project$LightsOut$Kernels$add,
-														8,
-														8,
-														1,
+														2,
+														5,
+														2,
 														$elm$core$Array$fromList(
 															_List_fromArray(
-																[1, 7, 0, 1, 7, 0, 1, 7])),
+																[1, 0, 1, 0, 1, 1, 0, 1, 0, 1])),
 														A5(
 															$author$project$LightsOut$Kernels$add,
-															7,
-															8,
-															1,
+															10,
+															4,
+															2,
 															$elm$core$Array$fromList(
 																_List_fromArray(
-																	[1, 6, 0, 1, 6, 0, 1, 6])),
+																	[2, 6, 6, 2, 2, 6, 6, 2])),
 															A5(
 																$author$project$LightsOut$Kernels$add,
-																6,
-																8,
-																1,
-																$elm$core$Array$fromList(
-																	_List_fromArray(
-																		[1, 5, 0, 1, 5, 0, 1, 5])),
+																9,
+																4,
+																2,
+																$elm$core$Array$fromList(_List_Nil),
 																A5(
 																	$author$project$LightsOut$Kernels$add,
-																	5,
 																	8,
-																	1,
-																	$elm$core$Array$fromList(
-																		_List_fromArray(
-																			[1, 4, 0, 1, 4, 0, 1, 4])),
+																	4,
+																	2,
+																	$elm$core$Array$fromList(_List_Nil),
 																	A5(
 																		$author$project$LightsOut$Kernels$add,
+																		7,
 																		4,
-																		8,
-																		1,
-																		$elm$core$Array$fromList(
-																			_List_fromArray(
-																				[1, 3, 0, 1, 3, 0, 1, 3])),
+																		2,
+																		$elm$core$Array$fromList(_List_Nil),
 																		A5(
 																			$author$project$LightsOut$Kernels$add,
-																			3,
-																			8,
-																			1,
-																			$elm$core$Array$fromList(
-																				_List_fromArray(
-																					[1, 2, 0, 1, 2, 0, 1, 2])),
+																			6,
+																			4,
+																			2,
+																			$elm$core$Array$fromList(_List_Nil),
 																			A5(
 																				$author$project$LightsOut$Kernels$add,
+																				5,
+																				4,
 																				2,
-																				8,
-																				1,
 																				$elm$core$Array$fromList(
 																					_List_fromArray(
-																						[1, 1, 0, 1, 1, 0, 1, 1])),
+																						[1, 3, 3, 1, 1, 3, 3, 1])),
 																				A5(
 																					$author$project$LightsOut$Kernels$add,
-																					10,
-																					7,
-																					1,
+																					4,
+																					4,
+																					2,
 																					$elm$core$Array$fromList(_List_Nil),
 																					A5(
 																						$author$project$LightsOut$Kernels$add,
-																						9,
-																						7,
-																						1,
+																						3,
+																						4,
+																						2,
 																						$elm$core$Array$fromList(_List_Nil),
 																						A5(
 																							$author$project$LightsOut$Kernels$add,
-																							8,
-																							7,
-																							1,
+																							2,
+																							4,
+																							2,
 																							$elm$core$Array$fromList(_List_Nil),
 																							A5(
 																								$author$project$LightsOut$Kernels$add,
-																								7,
-																								7,
-																								1,
-																								$elm$core$Array$fromList(_List_Nil),
+																								10,
+																								3,
+																								2,
+																								$elm$core$Array$fromList(
+																									_List_fromArray(
+																										[1, 0, 9, 9, 0, 1])),
 																								A5(
 																									$author$project$LightsOut$Kernels$add,
-																									6,
-																									7,
-																									1,
-																									$elm$core$Array$fromList(_List_Nil),
+																									10,
+																									3,
+																									2,
+																									$elm$core$Array$fromList(
+																										_List_fromArray(
+																											[5, 5, 5, 0, 5, 0])),
 																									A5(
 																										$author$project$LightsOut$Kernels$add,
-																										5,
-																										7,
-																										1,
-																										$elm$core$Array$fromList(_List_Nil),
+																										9,
+																										3,
+																										2,
+																										$elm$core$Array$fromList(
+																											_List_fromArray(
+																												[1, 0, 8, 8, 0, 1])),
 																										A5(
 																											$author$project$LightsOut$Kernels$add,
-																											4,
-																											7,
-																											1,
-																											$elm$core$Array$fromList(_List_Nil),
+																											8,
+																											3,
+																											2,
+																											$elm$core$Array$fromList(
+																												_List_fromArray(
+																													[1, 0, 7, 7, 0, 1])),
 																											A5(
 																												$author$project$LightsOut$Kernels$add,
+																												8,
 																												3,
-																												7,
-																												1,
-																												$elm$core$Array$fromList(_List_Nil),
+																												2,
+																												$elm$core$Array$fromList(
+																													_List_fromArray(
+																														[4, 4, 4, 0, 4, 0])),
 																												A5(
 																													$author$project$LightsOut$Kernels$add,
-																													2,
 																													7,
-																													1,
-																													$elm$core$Array$fromList(_List_Nil),
+																													3,
+																													2,
+																													$elm$core$Array$fromList(
+																														_List_fromArray(
+																															[1, 0, 6, 6, 0, 1])),
 																													A5(
 																														$author$project$LightsOut$Kernels$add,
-																														10,
 																														6,
-																														1,
-																														$elm$core$Array$fromList(_List_Nil),
+																														3,
+																														2,
+																														$elm$core$Array$fromList(
+																															_List_fromArray(
+																																[1, 0, 5, 5, 0, 1])),
 																														A5(
 																															$author$project$LightsOut$Kernels$add,
-																															9,
 																															6,
-																															1,
-																															$elm$core$Array$fromList(_List_Nil),
+																															3,
+																															2,
+																															$elm$core$Array$fromList(
+																																_List_fromArray(
+																																	[3, 3, 3, 0, 3, 0])),
 																															A5(
 																																$author$project$LightsOut$Kernels$add,
-																																8,
-																																6,
-																																1,
-																																$elm$core$Array$fromList(_List_Nil),
+																																5,
+																																3,
+																																2,
+																																$elm$core$Array$fromList(
+																																	_List_fromArray(
+																																		[1, 0, 4, 4, 0, 1])),
 																																A5(
 																																	$author$project$LightsOut$Kernels$add,
-																																	7,
-																																	6,
-																																	1,
-																																	$elm$core$Array$fromList(_List_Nil),
+																																	4,
+																																	3,
+																																	2,
+																																	$elm$core$Array$fromList(
+																																		_List_fromArray(
+																																			[1, 0, 3, 3, 0, 1])),
 																																	A5(
 																																		$author$project$LightsOut$Kernels$add,
-																																		6,
-																																		6,
-																																		1,
-																																		$elm$core$Array$fromList(_List_Nil),
+																																		4,
+																																		3,
+																																		2,
+																																		$elm$core$Array$fromList(
+																																			_List_fromArray(
+																																				[2, 2, 2, 0, 2, 0])),
 																																		A5(
 																																			$author$project$LightsOut$Kernels$add,
-																																			5,
-																																			6,
-																																			1,
-																																			$elm$core$Array$fromList(_List_Nil),
+																																			3,
+																																			3,
+																																			2,
+																																			$elm$core$Array$fromList(
+																																				_List_fromArray(
+																																					[1, 0, 2, 2, 0, 1])),
 																																			A5(
 																																				$author$project$LightsOut$Kernels$add,
-																																				4,
-																																				6,
-																																				1,
-																																				$elm$core$Array$fromList(_List_Nil),
+																																				2,
+																																				3,
+																																				2,
+																																				$elm$core$Array$fromList(
+																																					_List_fromArray(
+																																						[1, 0, 1, 1, 0, 1])),
 																																				A5(
 																																					$author$project$LightsOut$Kernels$add,
+																																					2,
 																																					3,
-																																					6,
-																																					1,
-																																					$elm$core$Array$fromList(_List_Nil),
+																																					2,
+																																					$elm$core$Array$fromList(
+																																						_List_fromArray(
+																																							[1, 1, 1, 0, 1, 0])),
 																																					A5(
 																																						$author$project$LightsOut$Kernels$add,
+																																						10,
 																																						2,
-																																						6,
-																																						1,
+																																						2,
 																																						$elm$core$Array$fromList(_List_Nil),
 																																						A5(
 																																							$author$project$LightsOut$Kernels$add,
-																																							10,
-																																							5,
-																																							1,
+																																							9,
+																																							2,
+																																							2,
 																																							$elm$core$Array$fromList(
 																																								_List_fromArray(
-																																									[1, 9, 0, 1, 9])),
+																																									[3, 3, 3, 3])),
 																																							A5(
 																																								$author$project$LightsOut$Kernels$add,
-																																								9,
-																																								5,
-																																								1,
-																																								$elm$core$Array$fromList(
-																																									_List_fromArray(
-																																										[1, 8, 0, 1, 8])),
+																																								8,
+																																								2,
+																																								2,
+																																								$elm$core$Array$fromList(_List_Nil),
 																																								A5(
 																																									$author$project$LightsOut$Kernels$add,
-																																									8,
-																																									5,
-																																									1,
-																																									$elm$core$Array$fromList(
-																																										_List_fromArray(
-																																											[1, 7, 0, 1, 7])),
+																																									7,
+																																									2,
+																																									2,
+																																									$elm$core$Array$fromList(_List_Nil),
 																																									A5(
 																																										$author$project$LightsOut$Kernels$add,
-																																										7,
-																																										5,
-																																										1,
+																																										6,
+																																										2,
+																																										2,
 																																										$elm$core$Array$fromList(
 																																											_List_fromArray(
-																																												[1, 6, 0, 1, 6])),
+																																												[2, 2, 2, 2])),
 																																										A5(
 																																											$author$project$LightsOut$Kernels$add,
-																																											6,
 																																											5,
-																																											1,
-																																											$elm$core$Array$fromList(
-																																												_List_fromArray(
-																																													[1, 5, 0, 1, 5])),
+																																											2,
+																																											2,
+																																											$elm$core$Array$fromList(_List_Nil),
 																																											A5(
 																																												$author$project$LightsOut$Kernels$add,
-																																												5,
-																																												5,
-																																												1,
-																																												$elm$core$Array$fromList(
-																																													_List_fromArray(
-																																														[1, 4, 0, 1, 4])),
+																																												4,
+																																												2,
+																																												2,
+																																												$elm$core$Array$fromList(_List_Nil),
 																																												A5(
 																																													$author$project$LightsOut$Kernels$add,
-																																													4,
-																																													5,
-																																													1,
+																																													3,
+																																													2,
+																																													2,
 																																													$elm$core$Array$fromList(
 																																														_List_fromArray(
-																																															[1, 3, 0, 1, 3])),
+																																															[1, 1, 1, 1])),
 																																													A5(
 																																														$author$project$LightsOut$Kernels$add,
-																																														3,
-																																														5,
-																																														1,
-																																														$elm$core$Array$fromList(
-																																															_List_fromArray(
-																																																[1, 2, 0, 1, 2])),
+																																														2,
+																																														2,
+																																														2,
+																																														$elm$core$Array$fromList(_List_Nil),
 																																														A5(
 																																															$author$project$LightsOut$Kernels$add,
-																																															2,
-																																															5,
+																																															10,
+																																															9,
 																																															1,
-																																															$elm$core$Array$fromList(
-																																																_List_fromArray(
-																																																	[1, 1, 0, 1, 1])),
+																																															$elm$core$Array$fromList(_List_Nil),
 																																															A5(
 																																																$author$project$LightsOut$Kernels$add,
-																																																10,
-																																																4,
+																																																9,
+																																																9,
 																																																1,
 																																																$elm$core$Array$fromList(_List_Nil),
 																																																A5(
 																																																	$author$project$LightsOut$Kernels$add,
+																																																	8,
 																																																	9,
-																																																	4,
 																																																	1,
 																																																	$elm$core$Array$fromList(_List_Nil),
 																																																	A5(
 																																																		$author$project$LightsOut$Kernels$add,
-																																																		8,
-																																																		4,
+																																																		7,
+																																																		9,
 																																																		1,
 																																																		$elm$core$Array$fromList(_List_Nil),
 																																																		A5(
 																																																			$author$project$LightsOut$Kernels$add,
-																																																			7,
-																																																			4,
+																																																			6,
+																																																			9,
 																																																			1,
 																																																			$elm$core$Array$fromList(_List_Nil),
 																																																			A5(
 																																																				$author$project$LightsOut$Kernels$add,
-																																																				6,
-																																																				4,
+																																																				5,
+																																																				9,
 																																																				1,
 																																																				$elm$core$Array$fromList(_List_Nil),
 																																																				A5(
 																																																					$author$project$LightsOut$Kernels$add,
-																																																					5,
 																																																					4,
+																																																					9,
 																																																					1,
 																																																					$elm$core$Array$fromList(_List_Nil),
 																																																					A5(
 																																																						$author$project$LightsOut$Kernels$add,
-																																																						4,
-																																																						4,
+																																																						3,
+																																																						9,
 																																																						1,
 																																																						$elm$core$Array$fromList(_List_Nil),
 																																																						A5(
 																																																							$author$project$LightsOut$Kernels$add,
-																																																							3,
-																																																							4,
+																																																							2,
+																																																							9,
 																																																							1,
 																																																							$elm$core$Array$fromList(_List_Nil),
 																																																							A5(
 																																																								$author$project$LightsOut$Kernels$add,
-																																																								2,
-																																																								4,
+																																																								10,
+																																																								8,
 																																																								1,
-																																																								$elm$core$Array$fromList(_List_Nil),
+																																																								$elm$core$Array$fromList(
+																																																									_List_fromArray(
+																																																										[1, 9, 0, 1, 9, 0, 1, 9])),
 																																																								A5(
 																																																									$author$project$LightsOut$Kernels$add,
-																																																									10,
-																																																									3,
+																																																									9,
+																																																									8,
 																																																									1,
-																																																									$elm$core$Array$fromList(_List_Nil),
+																																																									$elm$core$Array$fromList(
+																																																										_List_fromArray(
+																																																											[1, 8, 0, 1, 8, 0, 1, 8])),
 																																																									A5(
 																																																										$author$project$LightsOut$Kernels$add,
-																																																										9,
-																																																										3,
+																																																										8,
+																																																										8,
 																																																										1,
-																																																										$elm$core$Array$fromList(_List_Nil),
+																																																										$elm$core$Array$fromList(
+																																																											_List_fromArray(
+																																																												[1, 7, 0, 1, 7, 0, 1, 7])),
 																																																										A5(
 																																																											$author$project$LightsOut$Kernels$add,
+																																																											7,
 																																																											8,
-																																																											3,
 																																																											1,
-																																																											$elm$core$Array$fromList(_List_Nil),
+																																																											$elm$core$Array$fromList(
+																																																												_List_fromArray(
+																																																													[1, 6, 0, 1, 6, 0, 1, 6])),
 																																																											A5(
 																																																												$author$project$LightsOut$Kernels$add,
-																																																												7,
-																																																												3,
+																																																												6,
+																																																												8,
 																																																												1,
-																																																												$elm$core$Array$fromList(_List_Nil),
+																																																												$elm$core$Array$fromList(
+																																																													_List_fromArray(
+																																																														[1, 5, 0, 1, 5, 0, 1, 5])),
 																																																												A5(
 																																																													$author$project$LightsOut$Kernels$add,
-																																																													6,
-																																																													3,
+																																																													5,
+																																																													8,
 																																																													1,
-																																																													$elm$core$Array$fromList(_List_Nil),
+																																																													$elm$core$Array$fromList(
+																																																														_List_fromArray(
+																																																															[1, 4, 0, 1, 4, 0, 1, 4])),
 																																																													A5(
 																																																														$author$project$LightsOut$Kernels$add,
-																																																														5,
-																																																														3,
+																																																														4,
+																																																														8,
 																																																														1,
-																																																														$elm$core$Array$fromList(_List_Nil),
+																																																														$elm$core$Array$fromList(
+																																																															_List_fromArray(
+																																																																[1, 3, 0, 1, 3, 0, 1, 3])),
 																																																														A5(
 																																																															$author$project$LightsOut$Kernels$add,
-																																																															4,
 																																																															3,
+																																																															8,
 																																																															1,
-																																																															$elm$core$Array$fromList(_List_Nil),
+																																																															$elm$core$Array$fromList(
+																																																																_List_fromArray(
+																																																																	[1, 2, 0, 1, 2, 0, 1, 2])),
 																																																															A5(
 																																																																$author$project$LightsOut$Kernels$add,
-																																																																3,
-																																																																3,
+																																																																2,
+																																																																8,
 																																																																1,
-																																																																$elm$core$Array$fromList(_List_Nil),
+																																																																$elm$core$Array$fromList(
+																																																																	_List_fromArray(
+																																																																		[1, 1, 0, 1, 1, 0, 1, 1])),
 																																																																A5(
 																																																																	$author$project$LightsOut$Kernels$add,
-																																																																	2,
-																																																																	3,
+																																																																	10,
+																																																																	7,
 																																																																	1,
 																																																																	$elm$core$Array$fromList(_List_Nil),
 																																																																	A5(
 																																																																		$author$project$LightsOut$Kernels$add,
-																																																																		10,
-																																																																		2,
+																																																																		9,
+																																																																		7,
 																																																																		1,
-																																																																		$elm$core$Array$fromList(
-																																																																			_List_fromArray(
-																																																																				[1, 9])),
+																																																																		$elm$core$Array$fromList(_List_Nil),
 																																																																		A5(
 																																																																			$author$project$LightsOut$Kernels$add,
-																																																																			9,
-																																																																			2,
+																																																																			8,
+																																																																			7,
 																																																																			1,
-																																																																			$elm$core$Array$fromList(
-																																																																				_List_fromArray(
-																																																																					[1, 8])),
+																																																																			$elm$core$Array$fromList(_List_Nil),
 																																																																			A5(
 																																																																				$author$project$LightsOut$Kernels$add,
-																																																																				8,
-																																																																				2,
+																																																																				7,
+																																																																				7,
 																																																																				1,
-																																																																				$elm$core$Array$fromList(
-																																																																					_List_fromArray(
-																																																																						[1, 7])),
+																																																																				$elm$core$Array$fromList(_List_Nil),
 																																																																				A5(
 																																																																					$author$project$LightsOut$Kernels$add,
+																																																																					6,
 																																																																					7,
-																																																																					2,
 																																																																					1,
-																																																																					$elm$core$Array$fromList(
-																																																																						_List_fromArray(
-																																																																							[1, 6])),
+																																																																					$elm$core$Array$fromList(_List_Nil),
 																																																																					A5(
 																																																																						$author$project$LightsOut$Kernels$add,
-																																																																						6,
-																																																																						2,
+																																																																						5,
+																																																																						7,
 																																																																						1,
-																																																																						$elm$core$Array$fromList(
-																																																																							_List_fromArray(
-																																																																								[1, 5])),
+																																																																						$elm$core$Array$fromList(_List_Nil),
 																																																																						A5(
 																																																																							$author$project$LightsOut$Kernels$add,
-																																																																							5,
-																																																																							2,
+																																																																							4,
+																																																																							7,
 																																																																							1,
-																																																																							$elm$core$Array$fromList(
-																																																																								_List_fromArray(
-																																																																									[1, 4])),
+																																																																							$elm$core$Array$fromList(_List_Nil),
 																																																																							A5(
 																																																																								$author$project$LightsOut$Kernels$add,
-																																																																								4,
-																																																																								2,
+																																																																								3,
+																																																																								7,
 																																																																								1,
-																																																																								$elm$core$Array$fromList(
-																																																																									_List_fromArray(
-																																																																										[1, 3])),
+																																																																								$elm$core$Array$fromList(_List_Nil),
 																																																																								A5(
 																																																																									$author$project$LightsOut$Kernels$add,
-																																																																									3,
 																																																																									2,
+																																																																									7,
 																																																																									1,
-																																																																									$elm$core$Array$fromList(
-																																																																										_List_fromArray(
-																																																																											[1, 2])),
+																																																																									$elm$core$Array$fromList(_List_Nil),
 																																																																									A5(
 																																																																										$author$project$LightsOut$Kernels$add,
-																																																																										2,
-																																																																										2,
+																																																																										10,
+																																																																										6,
 																																																																										1,
-																																																																										$elm$core$Array$fromList(
-																																																																											_List_fromArray(
-																																																																												[1, 1])),
+																																																																										$elm$core$Array$fromList(_List_Nil),
 																																																																										A5(
 																																																																											$author$project$LightsOut$Kernels$add,
-																																																																											10,
-																																																																											1,
+																																																																											9,
+																																																																											6,
 																																																																											1,
 																																																																											$elm$core$Array$fromList(_List_Nil),
 																																																																											A5(
 																																																																												$author$project$LightsOut$Kernels$add,
-																																																																												9,
-																																																																												1,
+																																																																												8,
+																																																																												6,
 																																																																												1,
 																																																																												$elm$core$Array$fromList(_List_Nil),
 																																																																												A5(
 																																																																													$author$project$LightsOut$Kernels$add,
-																																																																													8,
-																																																																													1,
+																																																																													7,
+																																																																													6,
 																																																																													1,
 																																																																													$elm$core$Array$fromList(_List_Nil),
 																																																																													A5(
 																																																																														$author$project$LightsOut$Kernels$add,
-																																																																														7,
-																																																																														1,
+																																																																														6,
+																																																																														6,
 																																																																														1,
 																																																																														$elm$core$Array$fromList(_List_Nil),
 																																																																														A5(
 																																																																															$author$project$LightsOut$Kernels$add,
+																																																																															5,
 																																																																															6,
-																																																																															1,
 																																																																															1,
 																																																																															$elm$core$Array$fromList(_List_Nil),
 																																																																															A5(
 																																																																																$author$project$LightsOut$Kernels$add,
-																																																																																5,
-																																																																																1,
+																																																																																4,
+																																																																																6,
 																																																																																1,
 																																																																																$elm$core$Array$fromList(_List_Nil),
 																																																																																A5(
 																																																																																	$author$project$LightsOut$Kernels$add,
-																																																																																	4,
-																																																																																	1,
+																																																																																	3,
+																																																																																	6,
 																																																																																	1,
 																																																																																	$elm$core$Array$fromList(_List_Nil),
 																																																																																	A5(
 																																																																																		$author$project$LightsOut$Kernels$add,
-																																																																																		3,
-																																																																																		1,
+																																																																																		2,
+																																																																																		6,
 																																																																																		1,
 																																																																																		$elm$core$Array$fromList(_List_Nil),
 																																																																																		A5(
 																																																																																			$author$project$LightsOut$Kernels$add,
-																																																																																			2,
+																																																																																			10,
+																																																																																			5,
 																																																																																			1,
-																																																																																			1,
-																																																																																			$elm$core$Array$fromList(_List_Nil),
-																																																																																			$author$project$LightsOut$Kernels$empty)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
+																																																																																			$elm$core$Array$fromList(
+																																																																																				_List_fromArray(
+																																																																																					[1, 9, 0, 1, 9])),
+																																																																																			A5(
+																																																																																				$author$project$LightsOut$Kernels$add,
+																																																																																				9,
+																																																																																				5,
+																																																																																				1,
+																																																																																				$elm$core$Array$fromList(
+																																																																																					_List_fromArray(
+																																																																																						[1, 8, 0, 1, 8])),
+																																																																																				A5(
+																																																																																					$author$project$LightsOut$Kernels$add,
+																																																																																					8,
+																																																																																					5,
+																																																																																					1,
+																																																																																					$elm$core$Array$fromList(
+																																																																																						_List_fromArray(
+																																																																																							[1, 7, 0, 1, 7])),
+																																																																																					A5(
+																																																																																						$author$project$LightsOut$Kernels$add,
+																																																																																						7,
+																																																																																						5,
+																																																																																						1,
+																																																																																						$elm$core$Array$fromList(
+																																																																																							_List_fromArray(
+																																																																																								[1, 6, 0, 1, 6])),
+																																																																																						A5(
+																																																																																							$author$project$LightsOut$Kernels$add,
+																																																																																							6,
+																																																																																							5,
+																																																																																							1,
+																																																																																							$elm$core$Array$fromList(
+																																																																																								_List_fromArray(
+																																																																																									[1, 5, 0, 1, 5])),
+																																																																																							A5(
+																																																																																								$author$project$LightsOut$Kernels$add,
+																																																																																								5,
+																																																																																								5,
+																																																																																								1,
+																																																																																								$elm$core$Array$fromList(
+																																																																																									_List_fromArray(
+																																																																																										[1, 4, 0, 1, 4])),
+																																																																																								A5(
+																																																																																									$author$project$LightsOut$Kernels$add,
+																																																																																									4,
+																																																																																									5,
+																																																																																									1,
+																																																																																									$elm$core$Array$fromList(
+																																																																																										_List_fromArray(
+																																																																																											[1, 3, 0, 1, 3])),
+																																																																																									A5(
+																																																																																										$author$project$LightsOut$Kernels$add,
+																																																																																										3,
+																																																																																										5,
+																																																																																										1,
+																																																																																										$elm$core$Array$fromList(
+																																																																																											_List_fromArray(
+																																																																																												[1, 2, 0, 1, 2])),
+																																																																																										A5(
+																																																																																											$author$project$LightsOut$Kernels$add,
+																																																																																											2,
+																																																																																											5,
+																																																																																											1,
+																																																																																											$elm$core$Array$fromList(
+																																																																																												_List_fromArray(
+																																																																																													[1, 1, 0, 1, 1])),
+																																																																																											A5(
+																																																																																												$author$project$LightsOut$Kernels$add,
+																																																																																												10,
+																																																																																												4,
+																																																																																												1,
+																																																																																												$elm$core$Array$fromList(_List_Nil),
+																																																																																												A5(
+																																																																																													$author$project$LightsOut$Kernels$add,
+																																																																																													9,
+																																																																																													4,
+																																																																																													1,
+																																																																																													$elm$core$Array$fromList(_List_Nil),
+																																																																																													A5(
+																																																																																														$author$project$LightsOut$Kernels$add,
+																																																																																														8,
+																																																																																														4,
+																																																																																														1,
+																																																																																														$elm$core$Array$fromList(_List_Nil),
+																																																																																														A5(
+																																																																																															$author$project$LightsOut$Kernels$add,
+																																																																																															7,
+																																																																																															4,
+																																																																																															1,
+																																																																																															$elm$core$Array$fromList(_List_Nil),
+																																																																																															A5(
+																																																																																																$author$project$LightsOut$Kernels$add,
+																																																																																																6,
+																																																																																																4,
+																																																																																																1,
+																																																																																																$elm$core$Array$fromList(_List_Nil),
+																																																																																																A5(
+																																																																																																	$author$project$LightsOut$Kernels$add,
+																																																																																																	5,
+																																																																																																	4,
+																																																																																																	1,
+																																																																																																	$elm$core$Array$fromList(_List_Nil),
+																																																																																																	A5(
+																																																																																																		$author$project$LightsOut$Kernels$add,
+																																																																																																		4,
+																																																																																																		4,
+																																																																																																		1,
+																																																																																																		$elm$core$Array$fromList(_List_Nil),
+																																																																																																		A5(
+																																																																																																			$author$project$LightsOut$Kernels$add,
+																																																																																																			3,
+																																																																																																			4,
+																																																																																																			1,
+																																																																																																			$elm$core$Array$fromList(_List_Nil),
+																																																																																																			A5(
+																																																																																																				$author$project$LightsOut$Kernels$add,
+																																																																																																				2,
+																																																																																																				4,
+																																																																																																				1,
+																																																																																																				$elm$core$Array$fromList(_List_Nil),
+																																																																																																				A5(
+																																																																																																					$author$project$LightsOut$Kernels$add,
+																																																																																																					10,
+																																																																																																					3,
+																																																																																																					1,
+																																																																																																					$elm$core$Array$fromList(_List_Nil),
+																																																																																																					A5(
+																																																																																																						$author$project$LightsOut$Kernels$add,
+																																																																																																						9,
+																																																																																																						3,
+																																																																																																						1,
+																																																																																																						$elm$core$Array$fromList(_List_Nil),
+																																																																																																						A5(
+																																																																																																							$author$project$LightsOut$Kernels$add,
+																																																																																																							8,
+																																																																																																							3,
+																																																																																																							1,
+																																																																																																							$elm$core$Array$fromList(_List_Nil),
+																																																																																																							A5(
+																																																																																																								$author$project$LightsOut$Kernels$add,
+																																																																																																								7,
+																																																																																																								3,
+																																																																																																								1,
+																																																																																																								$elm$core$Array$fromList(_List_Nil),
+																																																																																																								A5(
+																																																																																																									$author$project$LightsOut$Kernels$add,
+																																																																																																									6,
+																																																																																																									3,
+																																																																																																									1,
+																																																																																																									$elm$core$Array$fromList(_List_Nil),
+																																																																																																									A5(
+																																																																																																										$author$project$LightsOut$Kernels$add,
+																																																																																																										5,
+																																																																																																										3,
+																																																																																																										1,
+																																																																																																										$elm$core$Array$fromList(_List_Nil),
+																																																																																																										A5(
+																																																																																																											$author$project$LightsOut$Kernels$add,
+																																																																																																											4,
+																																																																																																											3,
+																																																																																																											1,
+																																																																																																											$elm$core$Array$fromList(_List_Nil),
+																																																																																																											A5(
+																																																																																																												$author$project$LightsOut$Kernels$add,
+																																																																																																												3,
+																																																																																																												3,
+																																																																																																												1,
+																																																																																																												$elm$core$Array$fromList(_List_Nil),
+																																																																																																												A5(
+																																																																																																													$author$project$LightsOut$Kernels$add,
+																																																																																																													2,
+																																																																																																													3,
+																																																																																																													1,
+																																																																																																													$elm$core$Array$fromList(_List_Nil),
+																																																																																																													A5(
+																																																																																																														$author$project$LightsOut$Kernels$add,
+																																																																																																														10,
+																																																																																																														2,
+																																																																																																														1,
+																																																																																																														$elm$core$Array$fromList(
+																																																																																																															_List_fromArray(
+																																																																																																																[1, 9])),
+																																																																																																														A5(
+																																																																																																															$author$project$LightsOut$Kernels$add,
+																																																																																																															9,
+																																																																																																															2,
+																																																																																																															1,
+																																																																																																															$elm$core$Array$fromList(
+																																																																																																																_List_fromArray(
+																																																																																																																	[1, 8])),
+																																																																																																															A5(
+																																																																																																																$author$project$LightsOut$Kernels$add,
+																																																																																																																8,
+																																																																																																																2,
+																																																																																																																1,
+																																																																																																																$elm$core$Array$fromList(
+																																																																																																																	_List_fromArray(
+																																																																																																																		[1, 7])),
+																																																																																																																A5(
+																																																																																																																	$author$project$LightsOut$Kernels$add,
+																																																																																																																	7,
+																																																																																																																	2,
+																																																																																																																	1,
+																																																																																																																	$elm$core$Array$fromList(
+																																																																																																																		_List_fromArray(
+																																																																																																																			[1, 6])),
+																																																																																																																	A5(
+																																																																																																																		$author$project$LightsOut$Kernels$add,
+																																																																																																																		6,
+																																																																																																																		2,
+																																																																																																																		1,
+																																																																																																																		$elm$core$Array$fromList(
+																																																																																																																			_List_fromArray(
+																																																																																																																				[1, 5])),
+																																																																																																																		A5(
+																																																																																																																			$author$project$LightsOut$Kernels$add,
+																																																																																																																			5,
+																																																																																																																			2,
+																																																																																																																			1,
+																																																																																																																			$elm$core$Array$fromList(
+																																																																																																																				_List_fromArray(
+																																																																																																																					[1, 4])),
+																																																																																																																			A5(
+																																																																																																																				$author$project$LightsOut$Kernels$add,
+																																																																																																																				4,
+																																																																																																																				2,
+																																																																																																																				1,
+																																																																																																																				$elm$core$Array$fromList(
+																																																																																																																					_List_fromArray(
+																																																																																																																						[1, 3])),
+																																																																																																																				A5(
+																																																																																																																					$author$project$LightsOut$Kernels$add,
+																																																																																																																					3,
+																																																																																																																					2,
+																																																																																																																					1,
+																																																																																																																					$elm$core$Array$fromList(
+																																																																																																																						_List_fromArray(
+																																																																																																																							[1, 2])),
+																																																																																																																					A5(
+																																																																																																																						$author$project$LightsOut$Kernels$add,
+																																																																																																																						2,
+																																																																																																																						2,
+																																																																																																																						1,
+																																																																																																																						$elm$core$Array$fromList(
+																																																																																																																							_List_fromArray(
+																																																																																																																								[1, 1])),
+																																																																																																																						A5(
+																																																																																																																							$author$project$LightsOut$Kernels$add,
+																																																																																																																							10,
+																																																																																																																							1,
+																																																																																																																							1,
+																																																																																																																							$elm$core$Array$fromList(_List_Nil),
+																																																																																																																							A5(
+																																																																																																																								$author$project$LightsOut$Kernels$add,
+																																																																																																																								9,
+																																																																																																																								1,
+																																																																																																																								1,
+																																																																																																																								$elm$core$Array$fromList(_List_Nil),
+																																																																																																																								A5(
+																																																																																																																									$author$project$LightsOut$Kernels$add,
+																																																																																																																									8,
+																																																																																																																									1,
+																																																																																																																									1,
+																																																																																																																									$elm$core$Array$fromList(_List_Nil),
+																																																																																																																									A5(
+																																																																																																																										$author$project$LightsOut$Kernels$add,
+																																																																																																																										7,
+																																																																																																																										1,
+																																																																																																																										1,
+																																																																																																																										$elm$core$Array$fromList(_List_Nil),
+																																																																																																																										A5(
+																																																																																																																											$author$project$LightsOut$Kernels$add,
+																																																																																																																											6,
+																																																																																																																											1,
+																																																																																																																											1,
+																																																																																																																											$elm$core$Array$fromList(_List_Nil),
+																																																																																																																											A5(
+																																																																																																																												$author$project$LightsOut$Kernels$add,
+																																																																																																																												5,
+																																																																																																																												1,
+																																																																																																																												1,
+																																																																																																																												$elm$core$Array$fromList(_List_Nil),
+																																																																																																																												A5(
+																																																																																																																													$author$project$LightsOut$Kernels$add,
+																																																																																																																													4,
+																																																																																																																													1,
+																																																																																																																													1,
+																																																																																																																													$elm$core$Array$fromList(_List_Nil),
+																																																																																																																													A5(
+																																																																																																																														$author$project$LightsOut$Kernels$add,
+																																																																																																																														3,
+																																																																																																																														1,
+																																																																																																																														1,
+																																																																																																																														$elm$core$Array$fromList(_List_Nil),
+																																																																																																																														A5(
+																																																																																																																															$author$project$LightsOut$Kernels$add,
+																																																																																																																															2,
+																																																																																																																															1,
+																																																																																																																															1,
+																																																																																																																															$elm$core$Array$fromList(_List_Nil),
+																																																																																																																															$author$project$LightsOut$Kernels$empty)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
 var $author$project$LightsOut$Kernels$base = F3(
 	function (colors, columns, rows) {
 		return A2(

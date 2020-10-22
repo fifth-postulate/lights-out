@@ -28,7 +28,7 @@ init _ =
         description =
             { mode = Standard
             , columns = 5
-            , rows = 5
+            , rows = 2
             , colors = 2
             }
 
